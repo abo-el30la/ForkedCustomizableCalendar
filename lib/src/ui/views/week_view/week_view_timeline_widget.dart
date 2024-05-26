@@ -10,6 +10,7 @@ class WeekViewTimelineWidget extends StatefulWidget {
     required this.days,
     required this.initialScrollOffset,
     required this.buildChild,
+    required this.selectedDayIndex,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class WeekViewTimelineWidget extends StatefulWidget {
   final TimelineTheme theme;
   final WeekViewController controller;
   final Widget Function(DateTime dayTime) buildChild;
+  final int selectedDayIndex;
 
   @override
   State<WeekViewTimelineWidget> createState() => _WeekViewTimelineWidgetState();
@@ -53,13 +55,21 @@ class _WeekViewTimelineWidgetState extends State<WeekViewTimelineWidget> {
       key: widget.timelineKey,
       controller: _scrollController,
       child: Container(
-        color: Colors.transparent,
         height: 2400,
-        child: Row(
+        child:
+        Row(
           children: [
-            ...widget.days.map(widget.buildChild),
+           // ...widget.days.map(widget.buildChild),
+            widget.buildChild(widget.days[widget.selectedDayIndex]),
+
           ],
         ),
+
+        // Row(
+        //   children: [
+        //     ...widget.days.map(widget.buildChild),
+        //   ],
+        // ),
       ),
     );
   }
