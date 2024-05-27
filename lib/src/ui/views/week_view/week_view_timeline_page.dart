@@ -141,7 +141,9 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
       fit: StackFit.expand,
       children: [
         Container(
-          padding:  EdgeInsets.symmetric(horizontal: 8.0,vertical: 16),
+          padding: EdgeInsets.only(
+            left: timeScaleWidth,
+          ),
           color: Colors.transparent, // Needs for hitTesting
           child: PageView.builder(
             key: _daysRowKey,
@@ -151,6 +153,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               final weekDays = _getWeekDays(pageIndex);
               return Column(
                 children: [
+                  SizedBox(height: 16,),
                   _daysRow(weekDays),
                   _buildAllDayEventsList(weekDays, timeScaleWidth),
                 ],
