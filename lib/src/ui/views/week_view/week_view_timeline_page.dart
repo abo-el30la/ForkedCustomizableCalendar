@@ -427,7 +427,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
           days.length,
           (index) => Expanded(
             child: ColoredBox(
-              color: Colors.transparent,
+              color: Colors.white,
               // index.isOdd
               //     ? Colors.transparent
               //     : Colors.grey.withOpacity(0.1),
