@@ -79,12 +79,14 @@ class WeekViewTimelinePage<T extends FloatingCalendarEvent>
   final Widget? divider;
   final void Function(T)? onEventTap;
 
+
   @override
   State<WeekViewTimelinePage<T>> createState() => _WeekViewTimelinePageState();
 }
 
 class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
     extends State<WeekViewTimelinePage<T>> {
+  var currentIndex = 0 ;
   late ScrollController _timelineController;
   late PageController _daysRowController;
 
@@ -96,6 +98,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
 
   final GlobalKey _timelineKey = GlobalKey();
   final GlobalKey _daysRowKey = GlobalKey();
+  final selectedDayindex = 0;
 
   @override
   void initState() {
@@ -137,6 +140,8 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
           widget.controller.visibleDays,
         )
         .days;
+
+    // if(DateUtils.isSameDay(dayDate, _now))
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -326,6 +331,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
 ///arrows
   Widget _daysRow(List<DateTime> days) {
     if (widget.dayRowBuilder != null) {
+       currentIndex = days.indexWhere((dayDate) => DateUtils.isSameDay(dayDate, _now));
       return Row(
         children: [
           Container(
@@ -349,14 +355,20 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
           ),
           SizedBox(width: 4,),
           ...days.map((dayDate) => Expanded(
-              child: widget.dayRowBuilder!(
-                context,
-                dayDate,
-                widget.events
-                    .where((element) =>
-                element.start.isAfter(dayDate) &&
-                    element.start.isBefore(dayDate))
-                    .toList(),
+              child: InkWell(
+                onTap: (){
+                  currentIndex = days.indexOf(dayDate); // Get the index of the current dayDate
+                  print("day date ${dayDate} index ${currentIndex}");
+                },
+                child: widget.dayRowBuilder!(
+                  context,
+                  dayDate,
+                  widget.events
+                      .where((element) =>
+                  element.start.isAfter(dayDate) &&
+                      element.start.isBefore(dayDate))
+                      .toList(),
+                ),
               ),
             ),),
           SizedBox(width: 4,),
