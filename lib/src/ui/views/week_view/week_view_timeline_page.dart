@@ -153,8 +153,8 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               final weekDays = _getWeekDays(pageIndex);
               return Column(
                 children: [
+                  SizedBox(height: 16,),
                   _daysRow(weekDays),
-
                    ///put icons...
                   _buildAllDayEventsList(weekDays, timeScaleWidth),
                 ],
@@ -330,8 +330,8 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
       return Row(
         children: [
           Container(
-            width: 25,
-            height: 25,
+            width: 20,
+            height: 20,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               color: Colors.cyan,
@@ -348,6 +348,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               ),
             ),
           ),
+          SizedBox(width: 4,),
           ...days.map((dayDate) => Expanded(
               child: widget.dayRowBuilder!(
                 context,
@@ -359,6 +360,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                     .toList(),
               ),
             ),),
+          SizedBox(width: 4,),
           Container(
             width: 25,
             height: 25,
