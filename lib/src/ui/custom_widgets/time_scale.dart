@@ -94,7 +94,7 @@ class _ScalePainter extends CustomPainter {
 
       if (theme.drawHalfHourMarks) {
         final line = theme.halfHourMarkTheme;
-        final dx = _calculateLineDx(size.width, line.length);
+        final dx = _calculateLineDx(size.width, line.length );
         final dy = hourOffset + quarterHeight * 2 - line.strokeWidth / 2;
 
         canvas.drawLine(
@@ -172,8 +172,8 @@ class _CurrentTimeMarkPainter extends CustomPainter {
 
     final circleRadius = 5.0; // adjust the radius of the circle as needed
 
-    final dx = theme.length / 2; // calculate the x-coordinate for the line
-    final circleCenter = Offset(0, dy); // center point of the circle
+   // final circleCenter = Offset(0, dy); // center point of the circle
+    final circleCenter = Offset(3 + circleRadius, dy); // center point of the circle with padding
 
     canvas..drawCircle(
     circleCenter,
@@ -182,7 +182,7 @@ class _CurrentTimeMarkPainter extends CustomPainter {
     );
 
     canvas.drawLine(
-      Offset(0, dy),
+      Offset(5, dy),
       Offset(theme.length, dy),
       theme.painter,
     );
