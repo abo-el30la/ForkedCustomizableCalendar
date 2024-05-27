@@ -140,27 +140,24 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
     return Stack(
       fit: StackFit.expand,
       children: [
-        Container(
-          padding: EdgeInsets.only(
-            left: timeScaleWidth,
-          ),
-          color: Colors.transparent, // Needs for hitTesting
-          child: PageView.builder(
-            key: _daysRowKey,
-            controller: _daysRowController,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, pageIndex) {
-              final weekDays = _getWeekDays(pageIndex);
-              return Column(
-                children: [
-                  SizedBox(height: 16,),
-                  _daysRow(weekDays),
-                  _buildAllDayEventsList(weekDays, timeScaleWidth),
-                  SizedBox(height: 60,),
-
-                ],
-              );
-            },
+        Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
+          child: Container(
+            color: Colors.transparent, // Needs for hitTesting
+            child: PageView.builder(
+              key: _daysRowKey,
+              controller: _daysRowController,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, pageIndex) {
+                final weekDays = _getWeekDays(pageIndex);
+                return Column(
+                  children: [
+                    _daysRow(weekDays),
+                    _buildAllDayEventsList(weekDays, timeScaleWidth),
+                  ],
+                );
+              },
+            ),
           ),
         ),
         Column(
