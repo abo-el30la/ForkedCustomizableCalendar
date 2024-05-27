@@ -155,8 +155,9 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                 children: [
                   SizedBox(height: 16,),
                   _daysRow(weekDays),
-                   ///put icons...
                   _buildAllDayEventsList(weekDays, timeScaleWidth),
+                  SizedBox(height: 16,),
+
                 ],
               );
             },
@@ -170,7 +171,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               maintainState: true,
               maintainSize: true,
               child: Padding(
-                padding: EdgeInsets.only(left: timeScaleWidth),
+                padding: EdgeInsets.only(left: timeScaleWidth ),
                 child: Column(
                   children: [
                     _daysRow(weekDays),
