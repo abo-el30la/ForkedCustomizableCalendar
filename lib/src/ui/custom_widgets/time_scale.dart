@@ -170,6 +170,17 @@ class _CurrentTimeMarkPainter extends CustomPainter {
     final currentTimeOffset = timeDiff.inSeconds * secondExtent;
     final dy = currentTimeOffset - theme.strokeWidth / 2;
 
+    final circleRadius = 5.0; // adjust the radius of the circle as needed
+
+    final dx = theme.length / 2; // calculate the x-coordinate for the line
+    final circleCenter = Offset(0, dy); // center point of the circle
+
+    canvas..drawCircle(
+    circleCenter,
+    circleRadius,
+    theme.painter
+    );
+
     canvas.drawLine(
       Offset(0, dy),
       Offset(theme.length, dy),
