@@ -156,7 +156,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                   SizedBox(height: 16,),
                   _daysRow(weekDays),
                   _buildAllDayEventsList(weekDays, timeScaleWidth),
-                  SizedBox(height: 16,),
+                  SizedBox(height: 60,),
 
                 ],
               );
