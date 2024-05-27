@@ -143,6 +143,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
         Container(
           padding: EdgeInsets.only(
             left: timeScaleWidth,
+            right: timeScaleWidth
           ),
           color: Colors.transparent, // Needs for hitTesting
           child: PageView.builder(
