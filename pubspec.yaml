@@ -17,6 +17,7 @@ dependencies:
   intl: ^0.18.1
   collection: ^1.17.1
   scrollable_positioned_list: ^0.3.8
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -27,4 +28,10 @@ dev_dependencies:
   very_good_analysis: ^5.1.0
 
 flutter:
+  assets:
+    - assets/icons/ic_arrow_left.svg
+    - assets/icons/ic_arrow_right.svg
+    - assets/icons/arrow.png
+
   uses-material-design: true
+

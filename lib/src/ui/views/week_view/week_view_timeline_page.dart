@@ -5,6 +5,7 @@ import 'package:flutter_customizable_calendar/flutter_customizable_calendar.dart
 import 'package:flutter_customizable_calendar/src/ui/custom_widgets/all_days_events_list.dart';
 import 'package:flutter_customizable_calendar/src/ui/views/week_view/week_view_timeline_widget.dart';
 import 'package:flutter_customizable_calendar/src/utils/utils.dart';
+import 'package:flutter_svg/svg.dart';
 
 class WeekViewTimelinePage<T extends FloatingCalendarEvent>
     extends StatefulWidget {
@@ -152,7 +153,9 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               final weekDays = _getWeekDays(pageIndex);
               return Column(
                 children: [
-                  _daysRow(weekDays), ///put icons...
+                  _daysRow(weekDays),
+
+                   ///put icons...
                   _buildAllDayEventsList(weekDays, timeScaleWidth),
                 ],
               );
@@ -321,58 +324,99 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
       widget.controller.initialDate, pageIndex * widget.controller.visibleDays,).weekRange(widget.controller.visibleDays).days;
     return weekDays;
   }
-
+///arrows
   Widget _daysRow(List<DateTime> days) {
     if (widget.dayRowBuilder != null) {
       return Row(
-        children: days
-            .map(
-              (dayDate) => Expanded(
-                child: widget.dayRowBuilder!(
-                  context,
-                  dayDate,
-                  widget.events
-                      .where(
-                        (element) =>
-                            element.start.isAfter(dayDate) &&
-                            element.start.isBefore(dayDate),
-                      )
-                      .toList(),
-                ),
+        children: [
+          Container(
+            width: 25,
+            height: 25,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: Colors.cyan,
+            ),
+            child: InkWell(
+              onTap: () {
+                widget.controller.next();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.arrow_back_ios_sharp , color: Colors.white,size: 15,),
+                ],
               ),
-            )
-            .toList(),
+            ),
+          ),
+          ...days.map((dayDate) => Expanded(
+              child: widget.dayRowBuilder!(
+                context,
+                dayDate,
+                widget.events
+                    .where((element) =>
+                element.start.isAfter(dayDate) &&
+                    element.start.isBefore(dayDate))
+                    .toList(),
+              ),
+            ),),
+          Container(
+            width: 25,
+            height: 25,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: Colors.cyan,
+            ),
+            child: InkWell(
+              onTap: () {
+                widget.controller.prev();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.arrow_forward_ios_sharp , color: Colors.white,size: 15,),
+
+                ],
+              ),
+            ),
+          ),
+          SizedBox(width: 16,)
+        ],
       );
     }
+
+    // Rest of the code...
+
 
     final theme = widget.daysRowTheme;
 
     return SizedBox(
       height: theme.height,
       child: Row(
-        children: days
-            .map(
-              (dayDate) => Expanded(
-                child: Column(
-                  children: [
-                    if (!theme.hideWeekday)
-                      Text(
-                        theme.weekdayFormatter.call(dayDate),
-                        style: theme.weekdayStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                    if (!theme.hideNumber)
-                      Text(
-                        theme.numberFormatter.call(dayDate),
-                        style: theme.numberStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                  ],
+              children: days
+                  .map(
+                    (dayDate) => Expanded(
+                  child: Column(
+                    children: [
+                      if (!theme.hideWeekday)
+                        Text(
+                          theme.weekdayFormatter.call(dayDate),
+                          style: theme.weekdayStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                      if (!theme.hideNumber)
+                        Text(
+                          theme.numberFormatter.call(dayDate),
+                          style: theme.numberStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            )
-            .toList(growable: false),
-      ),
+              )
+                  .toList(growable: false),
+            ),
+
+
     );
   }
 
