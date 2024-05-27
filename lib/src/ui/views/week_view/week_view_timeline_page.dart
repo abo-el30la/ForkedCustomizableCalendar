@@ -362,8 +362,8 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
             ),),
           SizedBox(width: 4,),
           Container(
-            width: 25,
-            height: 25,
+            width: 20,
+            height: 20,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               color: Colors.cyan,
@@ -381,7 +381,6 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               ),
             ),
           ),
-          SizedBox(width: 16,)
         ],
       );
     }
@@ -427,9 +426,10 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
           days.length,
           (index) => Expanded(
             child: ColoredBox(
-              color: index.isOdd
-                  ? Colors.transparent
-                  : Colors.grey.withOpacity(0.1),
+              color: Colors.transparent,
+              // index.isOdd
+              //     ? Colors.transparent
+              //     : Colors.grey.withOpacity(0.1),
               child: const SizedBox.expand(),
             ),
           ),
