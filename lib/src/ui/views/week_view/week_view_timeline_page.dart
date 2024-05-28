@@ -98,7 +98,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
 
   final GlobalKey _timelineKey = GlobalKey();
   final GlobalKey _daysRowKey = GlobalKey();
-  final selectedDayindex = 0;
+  var selectedDay = DateTime.now();
 
   @override
   void initState() {
@@ -284,7 +284,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
             controller: widget.controller,
             timelineKey: widget.timelineKey(weekDays),
             theme: widget.theme,
-            selectedDayIndex: 0, ///put selected day index
+            selectedDay: selectedDay, ///put selected day index
             buildChild: _singleDayView,
           ),
         ],
@@ -357,7 +357,10 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
           ...days.map((dayDate) => Expanded(
               child: InkWell(
                 onTap: (){
-                  currentIndex = days.indexOf(dayDate); // Get the index of the current dayDate
+                //  currentIndex = days.indexOf(dayDate); // Get the index of the current dayDate
+                  setState(() {
+                    selectedDay = dayDate;
+                  });
                   print("day date ${dayDate} index ${currentIndex}");
                 },
                 child: widget.dayRowBuilder!(
