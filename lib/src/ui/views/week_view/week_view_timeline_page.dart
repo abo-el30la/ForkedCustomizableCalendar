@@ -147,9 +147,12 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
       fit: StackFit.expand,
       children: [
         Container(
-          padding: EdgeInsets.only(
-            left: timeScaleWidth ,
+          padding: EdgeInsets.symmetric(
+            horizontal: 30 ,
           ),
+          // padding: EdgeInsets.only(
+          //   left: timeScaleWidth ,
+          // ),
           color: Colors.transparent, // Needs for hitTesting
           child: PageView.builder(
             key: _daysRowKey,
@@ -355,7 +358,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.arrow_back_ios_sharp , color: Colors.white,size: 15,),
+                      Icon(Icons.arrow_back_ios_sharp , color: Colors.white,size: 12,),
                     ],
                   ),
                 ),
@@ -396,7 +399,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.arrow_forward_ios_sharp , color: Colors.white,size: 15,),
+                      Icon(Icons.arrow_forward_ios_sharp , color: Colors.white,size: 12,),
 
                     ],
                   ),
@@ -404,6 +407,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               ),
             ],
           ),
+          SizedBox(height: 10,),
           Text("${widget.daysRowTheme.weekdayFormatter(selectedDay)}"
               " ${widget.daysRowTheme.numberFormatter(selectedDay)}"
               " ${DateFormat('MMMM').format(selectedDay)},${selectedDay.year}",
