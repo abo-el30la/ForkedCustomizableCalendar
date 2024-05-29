@@ -163,8 +163,6 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                   SizedBox(height: 16,),
                   _daysRow(weekDays),
                   SizedBox(height: 8,),
-                  Text("${widget.daysRowTheme.weekdayFormatter(selectedDay)} ${widget.daysRowTheme.numberFormatter(selectedDay)} ${DateFormat('MMMM').format(selectedDay)},${selectedDay.year}",
-                    style: TextStyle(color: Colors.black54 , fontSize: 14, fontWeight: FontWeight.bold),),
                   _buildAllDayEventsList(weekDays, timeScaleWidth),
                 ],
               );
@@ -338,69 +336,79 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
   Widget _daysRow(List<DateTime> days) {
     if (widget.dayRowBuilder != null) {
      //  currentIndex = days.indexWhere((dayDate) => DateUtils.isSameDay(dayDate, _now));
-      return Row(
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 20,
-            height: 20,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Colors.cyan,
-            ),
-            child: InkWell(
-              onTap: () {
-                widget.controller.next();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.arrow_back_ios_sharp , color: Colors.white,size: 15,),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(width: 4,),
-          ...days.map((dayDate) => Expanded(
-              child: InkWell(
-                onTap: (){
-                //  currentIndex = days.indexOf(dayDate); // Get the index of the current dayDate
-                  setState(() {
-                    selectedDay = dayDate;
-                  });
-                //  print("day date ${dayDate} index ${currentIndex}");
-                },
-                child: widget.dayRowBuilder!(
-                  context,
-                  dayDate,
-                  widget.events
-                      .where((element) =>
-                  element.start.isAfter(dayDate) &&
-                      element.start.isBefore(dayDate))
-                      .toList(),
+          Row(
+            children: [
+              Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.cyan,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    widget.controller.next();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.arrow_back_ios_sharp , color: Colors.white,size: 15,),
+                    ],
+                  ),
                 ),
               ),
-            ),),
-          SizedBox(width: 4,),
-          Container(
-            width: 20,
-            height: 20,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Colors.cyan,
-            ),
-            child: InkWell(
-              onTap: () {
-                widget.controller.prev();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.arrow_forward_ios_sharp , color: Colors.white,size: 15,),
+              SizedBox(width: 4,),
+              ...days.map((dayDate) => Expanded(
+                  child: InkWell(
+                    onTap: (){
+                    //  currentIndex = days.indexOf(dayDate); // Get the index of the current dayDate
+                      setState(() {
+                        selectedDay = dayDate;
+                      });
+                    //  print("day date ${dayDate} index ${currentIndex}");
+                    },
+                    child: widget.dayRowBuilder!(
+                      context,
+                      dayDate,
+                      widget.events
+                          .where((element) =>
+                      element.start.isAfter(dayDate) &&
+                          element.start.isBefore(dayDate))
+                          .toList(),
+                    ),
+                  ),
+                ),),
+              SizedBox(width: 4,),
+              Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.cyan,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    widget.controller.prev();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.arrow_forward_ios_sharp , color: Colors.white,size: 15,),
 
-                ],
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
+          Text("${widget.daysRowTheme.weekdayFormatter(selectedDay)}"
+              " ${widget.daysRowTheme.numberFormatter(selectedDay)}"
+              " ${DateFormat('MMMM').format(selectedDay)},${selectedDay.year}",
+            style: TextStyle(color: Colors.black54 , fontSize: 14, fontWeight: FontWeight.bold),),
+          SizedBox(height: 20,)
         ],
       );
     }
