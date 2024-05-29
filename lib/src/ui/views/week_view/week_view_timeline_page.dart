@@ -1,4 +1,5 @@
 import 'package:clock/clock.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_customizable_calendar/flutter_customizable_calendar.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_customizable_calendar/src/ui/custom_widgets/all_days_eve
 import 'package:flutter_customizable_calendar/src/ui/views/week_view/week_view_timeline_widget.dart';
 import 'package:flutter_customizable_calendar/src/utils/utils.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 class WeekViewTimelinePage<T extends FloatingCalendarEvent>
     extends StatefulWidget {
@@ -86,7 +88,6 @@ class WeekViewTimelinePage<T extends FloatingCalendarEvent>
 
 class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
     extends State<WeekViewTimelinePage<T>> {
-  var currentIndex = 0 ;
   late ScrollController _timelineController;
   late PageController _daysRowController;
 
@@ -157,9 +158,13 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
             itemBuilder: (context, pageIndex) {
               final weekDays = _getWeekDays(pageIndex);
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 16,),
                   _daysRow(weekDays),
+                  SizedBox(height: 8,),
+                  Text("${widget.daysRowTheme.weekdayFormatter(selectedDay)} ${widget.daysRowTheme.numberFormatter(selectedDay)} ${DateFormat('MMMM').format(selectedDay)},${selectedDay.year}",
+                    style: TextStyle(color: Colors.black54 , fontSize: 14, fontWeight: FontWeight.bold),),
                   _buildAllDayEventsList(weekDays, timeScaleWidth),
                 ],
               );
@@ -259,6 +264,10 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
       ],
     );
   }
+  String monthNumberToString(int monthNumber) {
+    DateTime monthDate = DateTime(monthNumber); // You can use any year here
+    return DateFormat('MM').format(monthDate);
+  }
 
   Padding _buildBody(
     List<DateTime> weekDays,
@@ -269,11 +278,8 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
         right: widget.theme.padding.right,
       ),
       child: Stack(
-        fit: StackFit.expand,
+       fit: StackFit.expand,
         children: [
-          // Positioned.fill(
-          //   child: _stripesRow(weekDays),
-          // ),
           WeekViewTimelineWidget(
             days: weekDays,
             scrollTo: (offset) {
@@ -331,7 +337,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
 ///arrows
   Widget _daysRow(List<DateTime> days) {
     if (widget.dayRowBuilder != null) {
-       currentIndex = days.indexWhere((dayDate) => DateUtils.isSameDay(dayDate, _now));
+     //  currentIndex = days.indexWhere((dayDate) => DateUtils.isSameDay(dayDate, _now));
       return Row(
         children: [
           Container(
@@ -361,7 +367,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                   setState(() {
                     selectedDay = dayDate;
                   });
-                  print("day date ${dayDate} index ${currentIndex}");
+                //  print("day date ${dayDate} index ${currentIndex}");
                 },
                 child: widget.dayRowBuilder!(
                   context,
