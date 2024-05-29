@@ -173,6 +173,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
           ),
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Visibility(
               visible: false,
@@ -188,6 +189,14 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                   ],
                 ),
               ),
+            ),
+            SizedBox(height: 8),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("${widget.daysRowTheme.weekdayFormatter(selectedDay)}"
+                  " ${widget.daysRowTheme.numberFormatter(selectedDay)}"
+                  " ${DateFormat('MMMM').format(selectedDay)},${selectedDay.year}",
+                style: TextStyle(color: Colors.black54 , fontSize: 14, fontWeight: FontWeight.bold),),
             ),
             Expanded(
               child: Container(
@@ -407,12 +416,6 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               ),
             ],
           ),
-          SizedBox(height: 10,),
-          Text("${widget.daysRowTheme.weekdayFormatter(selectedDay)}"
-              " ${widget.daysRowTheme.numberFormatter(selectedDay)}"
-              " ${DateFormat('MMMM').format(selectedDay)},${selectedDay.year}",
-            style: TextStyle(color: Colors.black54 , fontSize: 14, fontWeight: FontWeight.bold),),
-          SizedBox(height: 20,)
         ],
       );
     }
