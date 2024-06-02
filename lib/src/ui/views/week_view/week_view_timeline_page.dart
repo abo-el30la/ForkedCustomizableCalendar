@@ -76,7 +76,8 @@ class WeekViewTimelinePage<T extends FloatingCalendarEvent>
   final Widget Function(
     BuildContext context,
     DateTime day,
-    List<T> events,
+    bool isSelected,
+  List<T> events,
   )? dayRowBuilder;
   final Widget? divider;
   final void Function(T)? onEventTap;
@@ -348,6 +349,8 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
   Widget _daysRow(List<DateTime> days) {
     if (widget.dayRowBuilder != null) {
      //  currentIndex = days.indexWhere((dayDate) => DateUtils.isSameDay(dayDate, _now));
+
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -385,6 +388,9 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                     child: widget.dayRowBuilder!(
                       context,
                       dayDate,
+                      selectedDay.year == dayDate.year &&
+                      selectedDay.month == dayDate.month &&
+                         selectedDay.day == dayDate.day,
                       widget.events
                           .where((element) =>
                       element.start.isAfter(dayDate) &&

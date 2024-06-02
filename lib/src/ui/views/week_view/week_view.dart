@@ -89,6 +89,7 @@ class WeekView<T extends FloatingCalendarEvent> extends StatefulWidget {
   final Widget Function(
     BuildContext context,
     DateTime day,
+    bool isSelected,
     List<T> events,
   )? dayRowBuilder;
 

@@ -203,7 +203,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
     );
   }
 
-  Widget _dayRowBuilder(context, day, events) {
+  Widget _dayRowBuilder(context, day,isSelected, events) {
     return Column(children: [
       Text(
         DateFormat.EEEE().format(day).substring(0, 3),
