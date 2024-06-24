@@ -301,11 +301,7 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
     return BlocListener<WeekViewController, WeekViewState>(
       bloc: widget.controller,
       listener: (context, state) {
-        final weeksOffset = state
-            .displayedWeek(widget.controller.visibleDays)
-            .start
-            .difference(_initialWeek.start)
-            .inWeeks(widget.controller.visibleDays);
+        final weeksOffset = state.displayedWeek(widget.controller.visibleDays).start.difference(_initialWeek.start).inWeeks(widget.controller.visibleDays);
 
         if (state is WeekViewCurrentWeekIsSet) {
           Future.wait([
@@ -335,6 +331,7 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
           });
         } else if (state is WeekViewNextWeekSelected ||
             state is WeekViewPrevWeekSelected) {
+          print("weeksOffset : WeekViewNextWeekSelected ${weeksOffset}");
           Future.wait([
             _weekPickerController!.animateToPage(
               weeksOffset,
@@ -342,7 +339,8 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
               curve: Curves.linearToEaseOut,
             ),
           ]).whenComplete(() {
-            setState(() {});
+            setState(() {}
+            );
           });
         }
       },

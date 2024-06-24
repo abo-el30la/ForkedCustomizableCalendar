@@ -569,8 +569,7 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
                         padding: theme.padding,
                         child: DaysListItem(
                           dayDate: dayDate,
-                          isFocused:
-                              DateUtils.isSameDay(state.focusedDate, dayDate),
+                          isFocused: DateUtils.isSameDay(state.focusedDate, dayDate),
                           theme: theme.itemTheme,
                           onTap: () => widget.controller.selectDay(dayDate),
                         ),

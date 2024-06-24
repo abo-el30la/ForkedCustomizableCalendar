@@ -210,8 +210,8 @@ class _DaysViewPageState extends State<DaysViewPage> {
   }
 
   Widget _buildDaysList(
-    context,
-    focusedDate,
+   BuildContext context,
+   DateTime focusedDate,
     events,
   ) {
     final filteredEvents = events.where((event) {

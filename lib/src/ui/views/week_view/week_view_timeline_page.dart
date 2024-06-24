@@ -137,13 +137,8 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
   @override
   Widget build(BuildContext context) {
     final timeScaleWidth = widget.theme.timeScaleTheme.width;
-    final weekDays = widget.controller.state.focusedDate
-        .weekRange(
-          widget.controller.visibleDays,
-        )
-        .days;
+    final weekDays = widget.controller.state.focusedDate.weekRange(widget.controller.visibleDays,).days;
 
-    // if(DateUtils.isSameDay(dayDate, _now))
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -255,11 +250,10 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                             controller: widget.weekPickerController,
                             physics: widget.pageViewPhysics,
                             onPageChanged: (index) {
-                              widget.controller.setPage(index);
+                            //  widget.controller.setPage(index);
                             },
                             itemBuilder: (context, pageIndex) {
                               final weekDays = _getWeekDays(pageIndex);
-
                               return _buildBody(weekDays);
                             },
                           ),
@@ -341,8 +335,8 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
   }
 
   List<DateTime> _getWeekDays(int pageIndex) {
-    final weekDays = DateUtils.addDaysToDate(
-      widget.controller.initialDate, pageIndex * widget.controller.visibleDays,).weekRange(widget.controller.visibleDays).days;
+    final weekDays = DateUtils.addDaysToDate(widget.controller.initialDate, (pageIndex+1) * widget.controller.visibleDays,).weekRange(widget.controller.visibleDays).days;
+  // print("week days ${weekDays}");
     return weekDays;
   }
 ///arrows
@@ -365,7 +359,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                 ),
                 child: InkWell(
                   onTap: () {
-                    widget.controller.next();
+                    widget.controller.prev();
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -379,10 +373,13 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               ...days.map((dayDate) => Expanded(
                   child: InkWell(
                     onTap: (){
+                      if (dayDate.weekday == DateTime.friday || dayDate.weekday == DateTime.saturday) {
+                      }else{
+                        setState(() {
+                          selectedDay = dayDate;
+                        });
+                      }
                     //  currentIndex = days.indexOf(dayDate); // Get the index of the current dayDate
-                      setState(() {
-                        selectedDay = dayDate;
-                      });
                     //  print("day date ${dayDate} index ${currentIndex}");
                     },
                     child: widget.dayRowBuilder!(
@@ -391,10 +388,10 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                       selectedDay.year == dayDate.year &&
                       selectedDay.month == dayDate.month &&
                          selectedDay.day == dayDate.day,
-                      widget.events
-                          .where((element) =>
+                      widget.events.where((element) =>
                       element.start.isAfter(dayDate) &&
-                          element.start.isBefore(dayDate))
+                          element.start.isBefore(dayDate)
+                      )
                           .toList(),
                     ),
                   ),
@@ -409,7 +406,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                 ),
                 child: InkWell(
                   onTap: () {
-                    widget.controller.prev();
+                    widget.controller.next();
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

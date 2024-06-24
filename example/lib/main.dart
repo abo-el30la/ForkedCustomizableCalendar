@@ -1,10 +1,15 @@
 import 'package:example/month_view_with_schedule_list_view/month_view_with_schedule_list_view_page.dart';
 import 'package:example/week_view_page/week_view_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc_observer.dart';
 import 'schedule_list_view_with_days_view/schedule_list_view_with_days_view_page.dart';
 
-void main() => runApp(const App());
+void main() {
+  Bloc.observer = MyBlocObserver();
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App({super.key});

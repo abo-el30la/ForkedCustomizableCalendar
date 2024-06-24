@@ -20,7 +20,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
 
   @override
   void initState() {
-    _controller = WeekViewController(visibleDays: 3);
+    _controller = WeekViewController(visibleDays: 7);
     super.initState();
   }
 
@@ -203,7 +203,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
     );
   }
 
-  Widget _dayRowBuilder(context, day,isSelected, events) {
+  Widget _dayRowBuilder(context,DateTime day,isSelected, events) {
     return Column(children: [
       Text(
         DateFormat.EEEE().format(day).substring(0, 3),
@@ -242,7 +242,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
     ]);
   }
 
-  Widget _buildWeekPicker(context, events, range) {
+  Widget _buildWeekPicker(BuildContext context, events,DateTimeRange range) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
