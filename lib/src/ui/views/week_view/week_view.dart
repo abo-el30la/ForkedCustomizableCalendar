@@ -346,12 +346,12 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
       },
       child: Column(
         children: [
-          _weekPicker(),
+          // _weekPicker(),
           Expanded(
             child: BlocBuilder<WeekViewController, WeekViewState>(
               bloc: widget.controller,
               builder: (context, state) {
-                return _weekTimeline(state);
+                return _weekTimeline(state,_weekPicker(),);
               },
             ),
           ),
@@ -409,12 +409,13 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
             .isSameWeekAs(widget.controller.visibleDays, previous.focusedDate),
       );
 
-  Widget _weekTimeline(WeekViewState state) {
+  Widget _weekTimeline(WeekViewState state,Widget weekPicker) {
     final theme = widget.timelineTheme;
 
     return LayoutBuilder(
       builder: (context, constraints) {
         return WeekViewTimelinePage(
+          weekPicker : weekPicker,
           weekPickerController: _weekPickerController!,
           weekPickerKey: _weekPickerKey,
           pageViewPhysics:

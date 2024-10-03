@@ -91,6 +91,8 @@ class _ScalePainter extends CustomPainter {
           canvas,
           Offset(-1, hourOffset - hourTextPainter.height / 2),
         );
+       
+
 
       if (theme.drawHalfHourMarks) {
         final line = theme.halfHourMarkTheme;

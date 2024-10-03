@@ -1,16 +1,13 @@
 import 'package:clock/clock.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_customizable_calendar/flutter_customizable_calendar.dart';
 import 'package:flutter_customizable_calendar/src/ui/custom_widgets/all_days_events_list.dart';
 import 'package:flutter_customizable_calendar/src/ui/views/week_view/week_view_timeline_widget.dart';
 import 'package:flutter_customizable_calendar/src/utils/utils.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
-class WeekViewTimelinePage<T extends FloatingCalendarEvent>
-    extends StatefulWidget {
+class WeekViewTimelinePage<T extends FloatingCalendarEvent> extends StatefulWidget {
   const WeekViewTimelinePage({
     required this.overlayBuilder,
     required this.weekPickerController,
@@ -29,6 +26,7 @@ class WeekViewTimelinePage<T extends FloatingCalendarEvent>
     required this.layoutKeys,
     required this.eventKeys,
     required this.allDayEventsTheme,
+    required this.weekPicker,
     this.eventBuilders = const {},
     this.dayRowBuilder,
     this.onEventTap,
@@ -44,6 +42,7 @@ class WeekViewTimelinePage<T extends FloatingCalendarEvent>
   final GlobalKey weekPickerKey;
   final Widget Function(Widget child) overlayBuilder;
   final PageController weekPickerController;
+  final Widget weekPicker;
 
   final void Function(
     List<AllDayCalendarEvent> visibleEvents,
@@ -77,18 +76,16 @@ class WeekViewTimelinePage<T extends FloatingCalendarEvent>
     BuildContext context,
     DateTime day,
     bool isSelected,
-  List<T> events,
+    List<T> events,
   )? dayRowBuilder;
   final Widget? divider;
   final void Function(T)? onEventTap;
-
 
   @override
   State<WeekViewTimelinePage<T>> createState() => _WeekViewTimelinePageState();
 }
 
-class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
-    extends State<WeekViewTimelinePage<T>> {
+class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<WeekViewTimelinePage<T>> {
   late ScrollController _timelineController;
   late PageController _daysRowController;
 
@@ -105,13 +102,11 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
   @override
   void initState() {
     _daysRowController = PageController(
-      initialPage: widget.weekPickerController.positions.isEmpty
-          ? widget.weekPickerController.initialPage
-          : widget.weekPickerController.page?.toInt() ?? 0,
+      initialPage:
+          widget.weekPickerController.positions.isEmpty ? widget.weekPickerController.initialPage : widget.weekPickerController.page?.toInt() ?? 0,
     );
     _timelineController = ScrollController(
-      initialScrollOffset:
-          widget.controller.timelineOffset ?? _focusedDate.hour * _hourExtent,
+      initialScrollOffset: widget.controller.timelineOffset ?? _focusedDate.hour * _hourExtent,
     );
 
     widget.weekPickerController.addListener(() {
@@ -136,15 +131,20 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
 
   @override
   Widget build(BuildContext context) {
-    final timeScaleWidth = widget.theme.timeScaleTheme.width;
-    final weekDays = widget.controller.state.focusedDate.weekRange(widget.controller.visibleDays,).days;
+    final timeScaleWidth = 0.0;
+    print('time scale width $timeScaleWidth');
+    final weekDays = widget.controller.state.focusedDate
+        .weekRange(
+          widget.controller.visibleDays,
+        )
+        .days;
 
     return Stack(
       fit: StackFit.expand,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 30 ,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 0 ,
           ),
           // padding: EdgeInsets.only(
           //   left: timeScaleWidth ,
@@ -159,9 +159,38 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 16,),
-                  _daysRow(weekDays),
-                  SizedBox(height: 8,),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 15,
+                      right: 15,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x29000000),
+                          offset: Offset(0, 3),
+                          blurRadius: 3,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        widget.weekPicker,
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        _daysRow(weekDays),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                      ],
+                    ),
+                  ),
                   _buildAllDayEventsList(weekDays, timeScaleWidth),
                 ],
               );
@@ -177,7 +206,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
               maintainState: true,
               maintainSize: true,
               child: Padding(
-                padding: EdgeInsets.only(left: timeScaleWidth ),
+                padding: EdgeInsets.only(left: timeScaleWidth),
                 child: Column(
                   children: [
                     _daysRow(weekDays),
@@ -186,79 +215,92 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 48),
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text("${widget.daysRowTheme.weekdayFormatter(selectedDay)}"
-                  " ${widget.daysRowTheme.numberFormatter(selectedDay)}"
-                  " ${DateFormat('MMMM').format(selectedDay)},${selectedDay.year}",
-                style: TextStyle(color: Colors.black54 , fontSize: 14, fontWeight: FontWeight.bold),),
+              child: Text(
+                "${widget.daysRowTheme.weekdayFormatter(selectedDay)}"
+                " ${widget.daysRowTheme.numberFormatter(selectedDay)}"
+                " ${DateFormat('MMMM').format(selectedDay)},${selectedDay.year}",
+                style: TextStyle(color: Colors.black54, fontSize: 14, fontWeight: FontWeight.bold),
+              ),
             ),
             Expanded(
               child: Container(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                child: Stack(
+                  // crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    NotificationListener(
-                      onNotification: (notification) {
-                        return true;
-                      },
-                      child: SingleChildScrollView(
-                        key: _timelineKey,
-                        controller: _timelineController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minWidth: timeScaleWidth,
-                            maxWidth: timeScaleWidth,
-                            minHeight: 2400,
-                            maxHeight: 2400,
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.only(
-                              top: widget.theme.padding.top,
-                              bottom: widget.theme.padding.bottom,
-                            ),
-                            color: Colors.transparent, // Needs for hitTesting
-                            child: TimeScale(
-                              showCurrentTimeMark: weekDays.first.isSameWeekAs(
-                                widget.controller.visibleDays,
-                                _now,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: NotificationListener(
+                            onNotification: (notification) {
+                              return true;
+                            },
+                            child: SingleChildScrollView(
+                              key: _timelineKey,
+                              controller: _timelineController,
+                              physics: const NeverScrollableScrollPhysics(),
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                  top: widget.theme.padding.top,
+                                  bottom: widget.theme.padding.bottom,
+                                ),
+                                color: const Color.fromRGBO(0, 0, 0, 0), // Needs for hitTesting
+                                child: Row(
+                                  children: [
+                                    TimeScale(
+                                      showCurrentTimeMark: weekDays.first.isSameWeekAs(
+                                        widget.controller.visibleDays,
+                                        _now,
+                                      ),
+                                      theme: widget.theme.timeScaleTheme,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              theme: widget.theme.timeScaleTheme,
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    Expanded(
-                      child: widget.overlayBuilder(
-                        NotificationListener(
-                          onNotification: (notification) {
-                            if (notification is UserScrollNotification) {
-                              if (notification.direction !=
-                                  ScrollDirection.idle) {
-                                (_daysRowController.position
-                                        as ScrollPositionWithSingleContext)
-                                    .goIdle();
-                              }
-                            }
-                            return false;
-                          },
-                          child: PageView.builder(
-                            key: widget.weekPickerKey,
-                            controller: widget.weekPickerController,
-                            physics: widget.pageViewPhysics,
-                            onPageChanged: (index) {
-                            //  widget.controller.setPage(index);
-                            },
-                            itemBuilder: (context, pageIndex) {
-                              final weekDays = _getWeekDays(pageIndex);
-                              return _buildBody(weekDays);
-                            },
+                    Row(
+                      children: [
+
+                        Expanded(
+                          child: widget.overlayBuilder(
+                            NotificationListener(
+                              onNotification: (notification) {
+                                if (notification is UserScrollNotification) {
+                                  if (notification.direction != ScrollDirection.idle) {
+                                    (_daysRowController.position as ScrollPositionWithSingleContext).goIdle();
+                                  }
+                                }
+                                return false;
+                              },
+                              child: PageView.builder(
+                                key: widget.weekPickerKey,
+                                controller: widget.weekPickerController,
+                                physics: widget.pageViewPhysics,
+                                onPageChanged: (index) {
+                                  //  widget.controller.setPage(index);
+                                },
+                                itemBuilder: (context, pageIndex) {
+                                  final weekDays = _getWeekDays(pageIndex);
+                                  return Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 60,
+                                      ),
+                                      Expanded(child: _buildBody(weekDays)),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -269,6 +311,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
       ],
     );
   }
+
   String monthNumberToString(int monthNumber) {
     DateTime monthDate = DateTime(monthNumber); // You can use any year here
     return DateFormat('MM').format(monthDate);
@@ -283,7 +326,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
         right: widget.theme.padding.right,
       ),
       child: Stack(
-       fit: StackFit.expand,
+        fit: StackFit.expand,
         children: [
           WeekViewTimelineWidget(
             days: weekDays,
@@ -295,7 +338,9 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
             controller: widget.controller,
             timelineKey: widget.timelineKey(weekDays),
             theme: widget.theme,
-            selectedDay: selectedDay, ///put selected day index
+            selectedDay: selectedDay,
+
+            ///put selected day index
             buildChild: _singleDayView,
           ),
         ],
@@ -319,12 +364,11 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
       ),
       allDayEvents: widget.allDayEvents
           .where(
-            (element) =>
-                DateTimeRange(start: element.start, end: element.end).days.any(
-                      (d1) => weekDays.any(
-                        (d2) => DateUtils.isSameDay(d1, d2),
-                      ),
-                    ),
+            (element) => DateTimeRange(start: element.start, end: element.end).days.any(
+                  (d1) => weekDays.any(
+                    (d2) => DateUtils.isSameDay(d1, d2),
+                  ),
+                ),
           )
           .toList(),
       onEventTap: widget.onAllDayEventTap,
@@ -335,15 +379,18 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
   }
 
   List<DateTime> _getWeekDays(int pageIndex) {
-    final weekDays = DateUtils.addDaysToDate(widget.controller.initialDate, (pageIndex+1) * widget.controller.visibleDays,).weekRange(widget.controller.visibleDays).days;
-  // print("week days ${weekDays}");
+    final weekDays = DateUtils.addDaysToDate(
+      widget.controller.initialDate,
+      (pageIndex + 1) * widget.controller.visibleDays,
+    ).weekRange(widget.controller.visibleDays).days;
+    // print("week days ${weekDays}");
     return weekDays;
   }
-///arrows
+
+  ///arrows
   Widget _daysRow(List<DateTime> days) {
     if (widget.dayRowBuilder != null) {
-     //  currentIndex = days.indexWhere((dayDate) => DateUtils.isSameDay(dayDate, _now));
-
+      //  currentIndex = days.indexWhere((dayDate) => DateUtils.isSameDay(dayDate, _now));
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -364,39 +411,43 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.arrow_back_ios_sharp , color: Colors.white,size: 12,),
+                      Icon(
+                        Icons.arrow_back_ios_sharp,
+                        color: Colors.white,
+                        size: 12,
+                      ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(width: 4,),
-              ...days.map((dayDate) => Expanded(
+              SizedBox(
+                width: 4,
+              ),
+              ...days.map(
+                (dayDate) => Expanded(
                   child: InkWell(
-                    onTap: (){
+                    onTap: () {
                       if (dayDate.weekday == DateTime.friday || dayDate.weekday == DateTime.saturday) {
-                      }else{
+                      } else {
                         setState(() {
                           selectedDay = dayDate;
                         });
                       }
-                    //  currentIndex = days.indexOf(dayDate); // Get the index of the current dayDate
-                    //  print("day date ${dayDate} index ${currentIndex}");
+                      //  currentIndex = days.indexOf(dayDate); // Get the index of the current dayDate
+                      //  print("day date ${dayDate} index ${currentIndex}");
                     },
                     child: widget.dayRowBuilder!(
                       context,
                       dayDate,
-                      selectedDay.year == dayDate.year &&
-                      selectedDay.month == dayDate.month &&
-                         selectedDay.day == dayDate.day,
-                      widget.events.where((element) =>
-                      element.start.isAfter(dayDate) &&
-                          element.start.isBefore(dayDate)
-                      )
-                          .toList(),
+                      selectedDay.year == dayDate.year && selectedDay.month == dayDate.month && selectedDay.day == dayDate.day,
+                      widget.events.where((element) => element.start.isAfter(dayDate) && element.start.isBefore(dayDate)).toList(),
                     ),
                   ),
-                ),),
-              SizedBox(width: 4,),
+                ),
+              ),
+              SizedBox(
+                width: 4,
+              ),
               Container(
                 width: 20,
                 height: 20,
@@ -411,8 +462,11 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.arrow_forward_ios_sharp , color: Colors.white,size: 12,),
-
+                      Icon(
+                        Icons.arrow_forward_ios_sharp,
+                        color: Colors.white,
+                        size: 12,
+                      ),
                     ],
                   ),
                 ),
@@ -425,37 +479,34 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent>
 
     // Rest of the code...
 
-
     final theme = widget.daysRowTheme;
 
     return SizedBox(
       height: theme.height,
       child: Row(
-              children: days
-                  .map(
-                    (dayDate) => Expanded(
-                  child: Column(
-                    children: [
-                      if (!theme.hideWeekday)
-                        Text(
-                          theme.weekdayFormatter.call(dayDate),
-                          style: theme.weekdayStyle,
-                          textAlign: TextAlign.center,
-                        ),
-                      if (!theme.hideNumber)
-                        Text(
-                          theme.numberFormatter.call(dayDate),
-                          style: theme.numberStyle,
-                          textAlign: TextAlign.center,
-                        ),
-                    ],
-                  ),
+        children: days
+            .map(
+              (dayDate) => Expanded(
+                child: Column(
+                  children: [
+                    if (!theme.hideWeekday)
+                      Text(
+                        theme.weekdayFormatter.call(dayDate),
+                        style: theme.weekdayStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                    if (!theme.hideNumber)
+                      Text(
+                        theme.numberFormatter.call(dayDate),
+                        style: theme.numberStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                  ],
                 ),
-              )
-                  .toList(growable: false),
-            ),
-
-
+              ),
+            )
+            .toList(growable: false),
+      ),
     );
   }
 
