@@ -76,8 +76,10 @@ class _ScalePainter extends CustomPainter {
     final hourExtent = size.height / Duration.hoursPerDay;
     final quarterHeight = hourExtent / 4;
 
-    for (var hour = 0; hour < Duration.hoursPerDay; hour++) {
-      final time = DateTime(dayDate.year, dayDate.month, dayDate.day, hour);
+    for (var hour = .0; hour < Duration.hoursPerDay; hour += .5) {
+      final h = hour.toInt();
+      final m = hour - 1;
+      final time = DateTime(dayDate.year, dayDate.month, dayDate.day, h, m.abs() == 0.5 ? 30 : 0);
       final hourTextPainter = TextPainter(
         text: TextSpan(
           text: theme.hourFormatter.call(time),

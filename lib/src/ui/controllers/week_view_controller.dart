@@ -30,8 +30,7 @@ class WeekViewController extends Cubit<WeekViewState> with CalendarController {
   DateTimeRange weekRange() {
     return DateUtils.addDaysToDate(
       initialDate,
-      (state.focusedDate.difference(initialDate).inDays ~/ visibleDays) *
-          visibleDays,
+      (state.focusedDate.difference(initialDate).inDays ~/ visibleDays) * visibleDays,
     ).weekRange(visibleDays);
   }
 
@@ -46,7 +45,7 @@ class WeekViewController extends Cubit<WeekViewState> with CalendarController {
 
   @override
   void reset() {
-  //  print("reset");
+    //  print("reset");
     final now = clock.now();
     emit(
       WeekViewCurrentWeekIsSet(
@@ -91,9 +90,37 @@ class WeekViewController extends Cubit<WeekViewState> with CalendarController {
     }
   }
 
+  void nextMonth() {
+    final nextMonth = DateUtils.addMonthsToMonthDate(state.focusedDate, 1).copyWith(day: 1);
+    print("nextMonth: $nextMonth");
+    if (!(endDate?.isBefore(nextMonth) ?? false)) {
+      final now = clock.now();
+      final isCurrentMonth = DateUtils.isSameMonth(nextMonth, now);
+      emit(
+        WeekViewNextMonthSelected(
+          focusedDate: isCurrentMonth ? now : nextMonth,
+        ),
+      );
+    }
+  }
+
+  void prevMonth() {
+    final prevMonth = DateUtils.addMonthsToMonthDate(state.focusedDate, -1).copyWith(day: 1);
+    print("prevMonth: $prevMonth");
+    if (!initialDate.isAfter(prevMonth)) {
+      final now = clock.now();
+      final isCurrentMonth = DateUtils.isSameMonth(prevMonth, now);
+      emit(
+        WeekViewPrevMonthSelected(
+          focusedDate: isCurrentMonth ? now : prevMonth,
+        ),
+      );
+    }
+  }
+
   /// Sets the displayed date.
   void setDisplayedDate(DateTime date) {
-  //  print("setDisplayedDate");
+    //  print("setDisplayedDate");
 
     emit(
       WeekViewCurrentWeekIsSet(
@@ -109,7 +136,6 @@ class WeekViewController extends Cubit<WeekViewState> with CalendarController {
 
   @override
   void setPage(int page) {
-
     final focusedDate = initialDate.addWeeks(
       visibleDays,
       page,
