@@ -91,12 +91,18 @@ class _ScalePainter extends CustomPainter {
           canvas,
           Offset(-1, hourOffset - hourTextPainter.height / 2),
         );
-       
-
+      // Draw a line next to the hour text
+      canvas.drawLine(
+        Offset(size.width - 10, hourOffset),
+        Offset(canvas.getDestinationClipBounds().right, hourOffset),
+        Paint()
+          ..color = Color(0xff8C8F90)
+          ..strokeWidth = 0.5,
+      );
 
       if (theme.drawHalfHourMarks) {
         final line = theme.halfHourMarkTheme;
-        final dx = _calculateLineDx(size.width, line.length );
+        final dx = _calculateLineDx(size.width, line.length);
         final dy = hourOffset + quarterHeight * 2 - line.strokeWidth / 2;
 
         canvas.drawLine(
@@ -128,8 +134,7 @@ class _ScalePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _ScalePainter oldDelegate) =>
-      theme != oldDelegate.theme || dayDate != oldDelegate.dayDate;
+  bool shouldRepaint(covariant _ScalePainter oldDelegate) => theme != oldDelegate.theme || dayDate != oldDelegate.dayDate;
 
   TextAlign get _textAlign {
     switch (theme.marksAlign) {
@@ -174,14 +179,10 @@ class _CurrentTimeMarkPainter extends CustomPainter {
 
     final circleRadius = 5.0; // adjust the radius of the circle as needed
 
-   // final circleCenter = Offset(0, dy); // center point of the circle
+    // final circleCenter = Offset(0, dy); // center point of the circle
     final circleCenter = Offset(3 + circleRadius, dy); // center point of the circle with padding
 
-    canvas..drawCircle(
-    circleCenter,
-    circleRadius,
-    theme.painter
-    );
+    canvas..drawCircle(circleCenter, circleRadius, theme.painter);
 
     canvas.drawLine(
       Offset(5, dy),
@@ -191,6 +192,5 @@ class _CurrentTimeMarkPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _CurrentTimeMarkPainter oldDelegate) =>
-      theme != oldDelegate.theme || currentTime != oldDelegate.currentTime;
+  bool shouldRepaint(covariant _CurrentTimeMarkPainter oldDelegate) => theme != oldDelegate.theme || currentTime != oldDelegate.currentTime;
 }
