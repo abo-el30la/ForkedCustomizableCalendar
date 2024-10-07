@@ -34,6 +34,7 @@ class WeekViewTimelinePage<T extends FloatingCalendarEvent> extends StatefulWidg
     this.allDayEventsShowMoreBuilder,
     this.onAllDayEventTap,
     this.onAllDayEventsShowMoreTap,
+    this.isArabic = false,
     super.key,
   });
 
@@ -80,7 +81,7 @@ class WeekViewTimelinePage<T extends FloatingCalendarEvent> extends StatefulWidg
   )? dayRowBuilder;
   final Widget? divider;
   final void Function(T)? onEventTap;
-
+  final bool isArabic;
   @override
   State<WeekViewTimelinePage<T>> createState() => _WeekViewTimelinePageState();
 }
@@ -143,9 +144,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
       fit: StackFit.expand,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 0 ,
-          ),
+          padding: EdgeInsets.zero,
           // padding: EdgeInsets.only(
           //   left: timeScaleWidth ,
           // ),
@@ -160,7 +159,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       left: 15,
                       right: 15,
                     ),
@@ -250,6 +249,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
                                 child: Row(
                                   children: [
                                     TimeScale(
+                                      isArabic: widget.isArabic,
                                       showCurrentTimeMark: weekDays.first.isSameWeekAs(
                                         widget.controller.visibleDays,
                                         _now,
@@ -266,7 +266,6 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
                     ),
                     Row(
                       children: [
-
                         Expanded(
                           child: widget.overlayBuilder(
                             NotificationListener(

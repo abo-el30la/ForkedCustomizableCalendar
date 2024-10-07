@@ -9,6 +9,7 @@ class TimeScale extends StatefulWidget {
   const TimeScale({
     super.key,
     this.showCurrentTimeMark = true,
+    this.isArabic = false,
     this.theme = const TimeScaleTheme(),
   });
 
@@ -17,6 +18,8 @@ class TimeScale extends StatefulWidget {
 
   /// Customization params for the view
   final TimeScaleTheme theme;
+
+  final bool isArabic;
 
   @override
   State<TimeScale> createState() => _TimeScaleState();
@@ -46,6 +49,7 @@ class _TimeScaleState extends State<TimeScale> {
   CustomPainter get _scale => _ScalePainter(
         dayDate: _clock.value,
         theme: widget.theme,
+        isArabic: widget.isArabic,
       );
 
   CustomPainter get _currentTimeMark => _CurrentTimeMarkPainter(
@@ -58,11 +62,14 @@ class _ScalePainter extends CustomPainter {
   const _ScalePainter({
     required this.dayDate,
     required this.theme,
+    required this.isArabic,
   });
 
   final DateTime dayDate;
 
   final TimeScaleTheme theme;
+
+  final bool isArabic;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -93,10 +100,10 @@ class _ScalePainter extends CustomPainter {
         );
       // Draw a line next to the hour text
       canvas.drawLine(
-        Offset(size.width - 10, hourOffset),
-        Offset(canvas.getDestinationClipBounds().right, hourOffset),
+        Offset(isArabic ? size.width - 55 : size.width, hourOffset),
+        Offset(isArabic ? canvas.getDestinationClipBounds().left : canvas.getDestinationClipBounds().right, hourOffset),
         Paint()
-          ..color = Color(0xff8C8F90)
+          ..color = const Color(0xff8C8F90)
           ..strokeWidth = 0.5,
       );
 
