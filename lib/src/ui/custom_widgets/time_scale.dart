@@ -94,7 +94,7 @@ class _ScalePainter extends CustomPainter {
         textDirection: TextDirection.ltr,
       );
       final hourOffset = hourExtent * hour;
-
+      print('paint - hourOffset: $hourOffset');
       // Draw an hour text
       hourTextPainter
         ..layout(
