@@ -55,6 +55,7 @@ class _TimeScaleState extends State<TimeScale> {
   CustomPainter get _currentTimeMark => _CurrentTimeMarkPainter(
         currentTime: _clock,
         theme: widget.theme.currentTimeMarkTheme,
+        isArabic: widget.isArabic,
       );
 }
 
@@ -74,12 +75,16 @@ class _ScalePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final hourExtent = size.height / Duration.hoursPerDay;
+    print('paint - hourExtent: $hourExtent');
     final quarterHeight = hourExtent / 4;
 
-    for (var hour = .0; hour < Duration.hoursPerDay; hour += .5) {
-      final h = hour.toInt();
-      final m = hour - 1;
-      final time = DateTime(dayDate.year, dayDate.month, dayDate.day, h, m.abs() == 0.5 ? 30 : 0);
+    for (var hour = 0; hour < Duration.hoursPerDay; hour += 1) {
+      final time = DateTime(
+        dayDate.year,
+        dayDate.month,
+        dayDate.day,
+        hour,
+      );
       final hourTextPainter = TextPainter(
         text: TextSpan(
           text: theme.hourFormatter.call(time),
@@ -103,21 +108,54 @@ class _ScalePainter extends CustomPainter {
       // Draw a line next to the hour text
       canvas.drawLine(
         Offset(isArabic ? size.width - 55 : size.width, hourOffset),
-        Offset(isArabic ? canvas.getDestinationClipBounds().left : canvas.getDestinationClipBounds().right, hourOffset),
+        Offset(
+          isArabic ? canvas.getDestinationClipBounds().left : canvas.getDestinationClipBounds().right,
+          hourOffset,
+        ),
         Paint()
           ..color = const Color(0xff8C8F90)
-          ..strokeWidth = 0.5,
+          ..strokeWidth = 0.2,
       );
 
       if (theme.drawHalfHourMarks) {
-        final line = theme.halfHourMarkTheme;
-        final dx = _calculateLineDx(size.width, line.length);
-        final dy = hourOffset + quarterHeight * 2 - line.strokeWidth / 2;
+        // Draw a half-hour time text
+        final halfHourTime = DateTime(
+          dayDate.year,
+          dayDate.month,
+          dayDate.day,
+          hour,
+          30,
+        );
+        final halfHourTextPainter = TextPainter(
+          text: TextSpan(
+            text: theme.hourFormatter.call(halfHourTime),
+            style: theme.textStyle,
+          ),
+          textAlign: _textAlign,
+          textDirection: TextDirection.ltr,
+        );
+        final halfHourOffset = hourOffset + quarterHeight * 2;
 
+        halfHourTextPainter
+          ..layout(
+            minWidth: size.width,
+            maxWidth: size.width,
+          )
+          ..paint(
+            canvas,
+            Offset(-1, halfHourOffset - halfHourTextPainter.height / 2),
+          );
+
+        // Draw a line next to the half-hour text
         canvas.drawLine(
-          Offset(dx, dy),
-          Offset(dx + line.length, dy),
-          line.painter,
+          Offset(isArabic ? size.width - 55 : size.width, halfHourOffset),
+          Offset(
+            isArabic ? canvas.getDestinationClipBounds().left : canvas.getDestinationClipBounds().right,
+            halfHourOffset,
+          ),
+          Paint()
+            ..color = const Color(0xff8C8F90)
+            ..strokeWidth = 0.5,
         );
       }
 
@@ -172,11 +210,14 @@ class _CurrentTimeMarkPainter extends CustomPainter {
   const _CurrentTimeMarkPainter({
     required this.currentTime,
     required this.theme,
+    required this.isArabic,
   }) : super(repaint: currentTime);
 
   final ValueListenable<DateTime> currentTime;
 
   final TimeMarkTheme theme;
+
+  final bool isArabic;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -186,18 +227,19 @@ class _CurrentTimeMarkPainter extends CustomPainter {
     final currentTimeOffset = timeDiff.inSeconds * secondExtent;
     final dy = currentTimeOffset - theme.strokeWidth / 2;
 
-    final circleRadius = 5.0; // adjust the radius of the circle as needed
+    const circleRadius = 5.0; // adjust the radius of the circle as needed
 
     // final circleCenter = Offset(0, dy); // center point of the circle
     final circleCenter = Offset(3 + circleRadius, dy); // center point of the circle with padding
 
-    canvas..drawCircle(circleCenter, circleRadius, theme.painter);
-
-    canvas.drawLine(
-      Offset(5, dy),
-      Offset(theme.length, dy),
-      theme.painter,
-    );
+    canvas
+      ..drawCircle(circleCenter, circleRadius, theme.painter)
+      // reverse line direction for arabic
+      ..drawLine(
+        Offset(isArabic ? size.width - theme.length : 5, dy),
+        Offset(isArabic ? size.width : theme.length, dy),
+        theme.painter,
+      );
   }
 
   @override

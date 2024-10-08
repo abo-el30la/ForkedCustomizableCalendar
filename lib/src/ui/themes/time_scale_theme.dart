@@ -19,7 +19,7 @@ class TimeScaleTheme extends Equatable {
   /// Customize the TimeScale with the parameters
   const TimeScaleTheme({
     this.width = 56,
-    this.hourExtent = 100,
+    this.hourExtent = LibSizes.hourExtent,
     this.currentTimeMarkTheme = const TimeMarkTheme(
       length: 48,
       color: Colors.red,

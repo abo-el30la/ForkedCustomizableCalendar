@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_customizable_calendar/flutter_customizable_calendar.dart';
 
+import '../../../utils/lib_sizes.dart';
+
 class WeekViewTimelineWidget extends StatefulWidget {
   const WeekViewTimelineWidget({
     required this.scrollTo,
@@ -56,14 +58,13 @@ class _WeekViewTimelineWidgetState extends State<WeekViewTimelineWidget> {
     return SingleChildScrollView(
       key: widget.timelineKey,
       controller: _scrollController,
-      child: Container(
-        height: 2400,
-        child:
-        Row(
+      child: SizedBox(
+        // 24 hours * LibSizes.hourExtent  ->  24 * 150
+        height: 24 * LibSizes.hourExtent,
+        child: Row(
           children: [
-           // ...widget.days.map(widget.buildChild),
-            if (index != -1)  widget.buildChild(widget.days[index]),
-
+            // ...widget.days.map(widget.buildChild),
+            if (index != -1) widget.buildChild(widget.days[index]),
           ],
         ),
       ),

@@ -82,6 +82,7 @@ class WeekViewTimelinePage<T extends FloatingCalendarEvent> extends StatefulWidg
   final Widget? divider;
   final void Function(T)? onEventTap;
   final bool isArabic;
+
   @override
   State<WeekViewTimelinePage<T>> createState() => _WeekViewTimelinePageState();
 }
@@ -132,7 +133,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
 
   @override
   Widget build(BuildContext context) {
-    final timeScaleWidth = 0.0;
+    const timeScaleWidth = 0.0;
     print('time scale width $timeScaleWidth');
     final weekDays = widget.controller.state.focusedDate
         .weekRange(
@@ -199,29 +200,33 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Visibility(
-              visible: false,
-              maintainAnimation: true,
-              maintainState: true,
-              maintainSize: true,
-              child: Padding(
-                padding: EdgeInsets.only(left: timeScaleWidth),
-                child: Column(
-                  children: [
-                    _daysRow(weekDays),
-                    _buildAllDayEventsList(weekDays, timeScaleWidth),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 48),
+            // Visibility(
+            //   visible: false,
+            //   maintainAnimation: true,
+            //   maintainState: true,
+            //   maintainSize: true,
+            //   child: Padding(
+            //     padding: EdgeInsets.only(left: timeScaleWidth),
+            //     child: Column(
+            //       children: [
+            //         _daysRow(weekDays),
+            //         _buildAllDayEventsList(weekDays, timeScaleWidth),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            const SizedBox(height: 120),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: Text(
-                "${widget.daysRowTheme.weekdayFormatter(selectedDay)}"
-                " ${widget.daysRowTheme.numberFormatter(selectedDay)}"
+                '${widget.daysRowTheme.weekdayFormatter(selectedDay)}'
+                ' ${widget.daysRowTheme.numberFormatter(selectedDay)}'
                 " ${DateFormat('MMMM').format(selectedDay)},${selectedDay.year}",
-                style: TextStyle(color: Colors.black54, fontSize: 14, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  color: Colors.black54,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Expanded(
@@ -288,7 +293,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
                                   final weekDays = _getWeekDays(pageIndex);
                                   return Row(
                                     children: [
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 60,
                                       ),
                                       Expanded(child: _buildBody(weekDays)),
@@ -312,7 +317,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
   }
 
   String monthNumberToString(int monthNumber) {
-    DateTime monthDate = DateTime(monthNumber); // You can use any year here
+    final monthDate = DateTime(monthNumber); // You can use any year here
     return DateFormat('MM').format(monthDate);
   }
 

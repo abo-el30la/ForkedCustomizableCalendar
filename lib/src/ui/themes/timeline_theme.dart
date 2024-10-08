@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_customizable_calendar/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 
+import '../../utils/lib_sizes.dart';
+
 part 'draggable_event_theme.dart';
 part 'floating_events_theme.dart';
 part 'sizer_theme.dart';
