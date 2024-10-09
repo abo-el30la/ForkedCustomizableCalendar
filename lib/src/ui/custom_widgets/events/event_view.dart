@@ -40,7 +40,7 @@ class EventView<T extends CalendarEvent> extends StatelessWidget {
   Widget build(BuildContext context) {
     if (event is AllDayCalendarEvent) {
       return Card(
-        color: event.color,
+        color: Colors.transparent,
         elevation: allDayEventsTheme.elevation,
         shape: allDayEventsTheme.shape,
         borderOnForeground: false,
@@ -55,12 +55,13 @@ class EventView<T extends CalendarEvent> extends StatelessWidget {
       );
     }
 
+    // TODO : This Event Card
     return Card(
       color: event.color,
       elevation: theme.elevation,
       shape: theme.shape,
       borderOnForeground: false,
-      margin: theme.margin,
+      margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,

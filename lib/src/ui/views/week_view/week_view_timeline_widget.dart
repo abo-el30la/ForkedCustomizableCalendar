@@ -56,6 +56,7 @@ class _WeekViewTimelineWidgetState extends State<WeekViewTimelineWidget> {
     final index = widget.days.indexWhere((day) => day.day == widget.selectedDay.day);
 
     return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(vertical: 10),
       key: widget.timelineKey,
       controller: _scrollController,
       child: SizedBox(

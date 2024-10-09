@@ -15,7 +15,7 @@ part 'time_scale_theme.dart';
 class TimelineTheme extends Equatable {
   /// Customize the Timeline with the parameters
   const TimelineTheme({
-    this.padding = const EdgeInsets.symmetric(vertical: 10),
+    this.padding = EdgeInsets.zero,
     this.cellExtent = 15,
     this.timeScaleTheme = const TimeScaleTheme(),
     this.floatingEventsTheme = const FloatingEventsTheme(),

@@ -105,6 +105,7 @@ class _ScalePainter extends CustomPainter {
           canvas,
           Offset(-1, hourOffset - hourTextPainter.height / 2),
         );
+      print('paint - hourTextPainter.height: ${hourTextPainter.height}');
       // Draw a line next to the hour text
       canvas.drawLine(
         Offset(isArabic ? size.width - 55 : size.width, hourOffset),

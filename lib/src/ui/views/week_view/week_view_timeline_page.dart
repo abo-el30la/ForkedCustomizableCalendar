@@ -232,6 +232,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
             Expanded(
               child: Container(
                 child: Stack(
+                  alignment: Alignment.center,
                   // crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Row(
@@ -245,6 +246,9 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
                               key: _timelineKey,
                               controller: _timelineController,
                               physics: const NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.symmetric(
+                                vertical: 10,
+                              ),
                               child: Container(
                                 padding: EdgeInsets.only(
                                   top: widget.theme.padding.top,
@@ -517,13 +521,13 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
   Widget _stripesRow(List<DateTime> days) => Row(
         children: List.generate(
           days.length,
-          (index) => Expanded(
+          (index) => const Expanded(
             child: ColoredBox(
               color: Colors.white,
               // index.isOdd
               //     ? Colors.transparent
               //     : Colors.grey.withOpacity(0.1),
-              child: const SizedBox.expand(),
+              child: SizedBox.expand(),
             ),
           ),
           growable: false,
@@ -535,6 +539,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
       child: RenderIdProvider(
         id: dayDate,
         child: Container(
+          /// TODO : Padding to fit events at time scale
           padding: EdgeInsets.only(
             top: widget.theme.padding.top,
             bottom: widget.theme.padding.bottom,

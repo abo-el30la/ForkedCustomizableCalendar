@@ -88,28 +88,22 @@ class EventsLayout<T extends FloatingCalendarEvent> extends StatefulWidget {
   State<EventsLayout<T>> createState() => _EventsLayoutState<T>();
 }
 
-class _EventsLayoutState<T extends FloatingCalendarEvent>
-    extends State<EventsLayout<T>> {
+class _EventsLayoutState<T extends FloatingCalendarEvent> extends State<EventsLayout<T>> {
   /// Defines if show events in simplified way
   bool get simpleView => widget.viewType == CalendarView.month;
 
   double _eventsContainerHeight = 0;
 
-  MonthShowMoreTheme get _getShowMoreButtonTheme =>
-      widget.showMoreTheme ?? const MonthShowMoreTheme();
+  MonthShowMoreTheme get _getShowMoreButtonTheme => widget.showMoreTheme ?? const MonthShowMoreTheme();
 
   int get maxEvents => max(
         0,
-        ((_eventsContainerHeight - _getShowMoreButtonTheme.height) /
-                (_getShowMoreButtonTheme.height +
-                    _getShowMoreButtonTheme.padding.vertical))
+        ((_eventsContainerHeight - _getShowMoreButtonTheme.height) / (_getShowMoreButtonTheme.height + _getShowMoreButtonTheme.padding.vertical))
             .floor(),
       );
 
   bool _eventPresentAtDay<E extends CalendarEvent>(E event) =>
-      DateUtils.isSameDay(event.start, widget.dayDate) ||
-      (event.start.isBefore(widget.dayDate) &&
-          event.end.isAfter(widget.dayDate));
+      DateUtils.isSameDay(event.start, widget.dayDate) || (event.start.isBefore(widget.dayDate) && event.end.isAfter(widget.dayDate));
 
   List<E> _getEventsOnDay<E extends CalendarEvent>(List<E> list) {
     // For month view, daily event list is passed in constructor
@@ -197,8 +191,7 @@ class _EventsLayoutState<T extends FloatingCalendarEvent>
   }
 
   Widget _buildMonthViewEvents(List<T> eventsToDisplay) {
-    final filteredEventsToDisplay =
-        _getFilteredEventsToDisplay(eventsToDisplay);
+    final filteredEventsToDisplay = _getFilteredEventsToDisplay(eventsToDisplay);
     if (widget.eventsListBuilder != null) {
       return Column(
         key: ValueKey(widget.controller),
@@ -239,8 +232,7 @@ class _EventsLayoutState<T extends FloatingCalendarEvent>
                     _buildEventView(e),
                   ),
                 ),
-            if (filteredEventsToDisplay.length > maxEvents)
-              _buildShowMoreButton(filteredEventsToDisplay),
+            if (filteredEventsToDisplay.length > maxEvents) _buildShowMoreButton(filteredEventsToDisplay),
           ],
         ),
       );
@@ -268,9 +260,7 @@ class _EventsLayoutState<T extends FloatingCalendarEvent>
   Visibility _buildMonthViewEventItem(T event, Widget child) {
     final eventWidth = _getEventWidth(event);
     return Visibility(
-      visible: DateUtils.dateOnly(event.start) ==
-              DateUtils.dateOnly(widget.dayDate) ||
-          widget.dayDate.weekday == 1,
+      visible: DateUtils.dateOnly(event.start) == DateUtils.dateOnly(widget.dayDate) || widget.dayDate.weekday == 1,
       maintainState: true,
       maintainAnimation: true,
       maintainSize: true,
@@ -376,8 +366,7 @@ class _EventsLayoutState<T extends FloatingCalendarEvent>
   }
 }
 
-class _EventsLayoutDelegate<T extends FloatingCalendarEvent>
-    extends MultiChildLayoutDelegate {
+class _EventsLayoutDelegate<T extends FloatingCalendarEvent> extends MultiChildLayoutDelegate {
   _EventsLayoutDelegate({
     required this.date,
     required this.breaks,
@@ -424,8 +413,7 @@ class _EventsLayoutDelegate<T extends FloatingCalendarEvent>
       ];
 
       // Clustering the events
-      while (finalIndex < events.length &&
-          events[finalIndex].start.isBefore(clusterEndDate)) {
+      while (finalIndex < events.length && events[finalIndex].start.isBefore(clusterEndDate)) {
         final currentEvent = events[finalIndex];
 
         if (currentEvent.end.isAfter(clusterEndDate)) {
@@ -453,13 +441,11 @@ class _EventsLayoutDelegate<T extends FloatingCalendarEvent>
           var prev = index - 1;
 
           // If an event layout intersects with the previous one
-          if (currentDate.difference(rows[prev].last.start) <
-              rows[prev].last.duration) {
+          if (currentDate.difference(rows[prev].last.start) < rows[prev].last.duration) {
             dxOffset = layoutsMap[rows[prev].last]!.left + dxStep;
           } else {
             // Finding the last intersected event
-            while (currentDate.difference(rows[prev].first.start) >=
-                rows[prev].first.duration) {
+            while (currentDate.difference(rows[prev].first.start) >= rows[prev].first.duration) {
               prev--;
             }
 
@@ -492,9 +478,7 @@ class _EventsLayoutDelegate<T extends FloatingCalendarEvent>
 
         layoutChild(
           event,
-          (event.duration == Duration.zero)
-              ? BoxConstraints.loose(eventBox.size)
-              : BoxConstraints.tight(eventBox.size),
+          (event.duration == Duration.zero) ? BoxConstraints.loose(eventBox.size) : BoxConstraints.tight(eventBox.size),
         );
         positionChild(event, eventBox.topLeft);
       }
