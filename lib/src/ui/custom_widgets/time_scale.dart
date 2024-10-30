@@ -75,7 +75,7 @@ class _ScalePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final hourExtent = size.height / Duration.hoursPerDay;
-    print('paint - hourExtent: $hourExtent');
+    // print('paint - hourExtent: $hourExtent');
     final quarterHeight = hourExtent / 4;
 
     for (var hour = 0; hour < Duration.hoursPerDay; hour += 1) {
@@ -94,7 +94,7 @@ class _ScalePainter extends CustomPainter {
         textDirection: TextDirection.ltr,
       );
       final hourOffset = hourExtent * hour;
-      print('paint - hourOffset: $hourOffset');
+      // print('paint - hourOffset: $hourOffset');
       // Draw an hour text
       hourTextPainter
         ..layout(
@@ -105,7 +105,7 @@ class _ScalePainter extends CustomPainter {
           canvas,
           Offset(-1, hourOffset - hourTextPainter.height / 2),
         );
-      print('paint - hourTextPainter.height: ${hourTextPainter.height}');
+      // print('paint - hourTextPainter.height: ${hourTextPainter.height}');
       // Draw a line next to the hour text
       canvas.drawLine(
         Offset(isArabic ? size.width - 55 : size.width, hourOffset),

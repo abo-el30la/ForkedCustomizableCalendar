@@ -315,7 +315,7 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
             setState(() {});
           });
         } else if (state is WeekViewNextWeekSelected || state is WeekViewPrevWeekSelected) {
-          print("weeksOffset : WeekViewNextWeekSelected ${weeksOffset}");
+          // print("weeksOffset : WeekViewNextWeekSelected ${weeksOffset}");
           Future.wait([
             _weekPickerController!.animateToPage(
               weeksOffset,
@@ -326,7 +326,7 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
             setState(() {});
           });
         } else if (state is WeekViewNextMonthSelected || state is WeekViewPrevMonthSelected) {
-          print("weeksOffset : WeekViewNextMonthSelected ${weeksOffset}");
+          // print("weeksOffset : WeekViewNextMonthSelected ${weeksOffset}");
           Future.wait([
             _weekPickerController!.animateToPage(
               weeksOffset,

@@ -134,7 +134,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
   @override
   Widget build(BuildContext context) {
     const timeScaleWidth = 0.0;
-    print('time scale width $timeScaleWidth');
+    // print('time scale width $timeScaleWidth');
     final weekDays = widget.controller.state.focusedDate
         .weekRange(
           widget.controller.visibleDays,

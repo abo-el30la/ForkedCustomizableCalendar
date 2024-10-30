@@ -92,7 +92,7 @@ class WeekViewController extends Cubit<WeekViewState> with CalendarController {
 
   void nextMonth() {
     final nextMonth = DateUtils.addMonthsToMonthDate(state.focusedDate, 1).copyWith(day: 1);
-    print("nextMonth: $nextMonth");
+    // print("nextMonth: $nextMonth");
     if (!(endDate?.isBefore(nextMonth) ?? false)) {
       final now = clock.now();
       final isCurrentMonth = DateUtils.isSameMonth(nextMonth, now);
@@ -106,7 +106,7 @@ class WeekViewController extends Cubit<WeekViewState> with CalendarController {
 
   void prevMonth() {
     final prevMonth = DateUtils.addMonthsToMonthDate(state.focusedDate, -1).copyWith(day: 1);
-    print("prevMonth: $prevMonth");
+    // print("prevMonth: $prevMonth");
     if (!initialDate.isAfter(prevMonth)) {
       final now = clock.now();
       final isCurrentMonth = DateUtils.isSameMonth(prevMonth, now);
