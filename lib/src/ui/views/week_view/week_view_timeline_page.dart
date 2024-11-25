@@ -296,6 +296,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
                                 itemBuilder: (context, pageIndex) {
                                   final weekDays = _getWeekDays(pageIndex);
                                   return Row(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       const SizedBox(
                                         width: 60,
@@ -334,7 +335,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
         right: widget.theme.padding.right,
       ),
       child: Stack(
-        fit: StackFit.expand,
+        // fit: StackFit.expand,
         children: [
           WeekViewTimelineWidget(
             days: weekDays,

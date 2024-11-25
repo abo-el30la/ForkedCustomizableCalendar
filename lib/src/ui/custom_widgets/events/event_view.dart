@@ -56,26 +56,38 @@ class EventView<T extends CalendarEvent> extends StatelessWidget {
     }
 
     // TODO : This Event Card
-    return Card(
-      color: event.color,
-      elevation: theme.elevation,
-      shape: theme.shape,
-      borderOnForeground: false,
-      margin: EdgeInsets.zero,
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Builder(
-          builder: _getEventBuilder(event.runtimeType),
-        ),
+
+    // return Container(
+    //   width: 100,
+    //   height: 100,
+    //   color: Colors.green,
+    // );
+
+    return Container(
+      child: Builder(
+        builder: _getEventBuilder(event.runtimeType),
       ),
     );
+    // Card(
+    //   // color: event.color,
+    //   // elevation: theme.elevation,
+    //   shape: theme.shape,
+    //   borderOnForeground: false,
+    //   margin: EdgeInsets.zero,
+    //   clipBehavior: Clip.antiAlias,
+    //   child: InkWell(
+    //     onTap: onTap,
+    //     child: Builder(
+    //       builder: _getEventBuilder(event.runtimeType),
+    //     ),
+    //   ),
+    // );
   }
 
   WidgetBuilder _getEventBuilder(Type type) {
-    if (eventBuilders[type] == null) {
-      return _createBody[type]!;
-    }
+    // if (eventBuilders[type] == null) {
+    //   return _createBody[type]!;
+    // }
 
     return (context) {
       return eventBuilders[type]!.call(context, event);

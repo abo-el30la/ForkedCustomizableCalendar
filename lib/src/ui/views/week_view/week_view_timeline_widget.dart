@@ -56,13 +56,15 @@ class _WeekViewTimelineWidgetState extends State<WeekViewTimelineWidget> {
     final index = widget.days.indexWhere((day) => day.day == widget.selectedDay.day);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       key: widget.timelineKey,
       controller: _scrollController,
       child: SizedBox(
         // 24 hours * LibSizes.hourExtent  ->  24 * 150
         height: 24 * LibSizes.hourExtent,
+        // width: 30,
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             // ...widget.days.map(widget.buildChild),
             if (index != -1) widget.buildChild(widget.days[index]),
