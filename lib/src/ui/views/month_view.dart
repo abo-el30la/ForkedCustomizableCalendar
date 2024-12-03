@@ -50,7 +50,7 @@ class MonthView<T extends FloatingCalendarEvent> extends StatefulWidget {
     this.eventBuilders = const {},
     this.pageViewPhysics,
     this.overrideOnEventLongPress,
-    this.weekStartsOnSunday = false,
+    this.weekStartsOnSunday = true,
     this.enableFloatingEvents = true,
     this.numberOfWeeks = 6,
   }) : assert(
@@ -142,8 +142,7 @@ class MonthView<T extends FloatingCalendarEvent> extends StatefulWidget {
   final Future<CalendarEvent?> Function(DateTime)? onDateLongPress;
 
   /// Overrides the default behavior of the event view's long press
-  final void Function(LongPressStartDetails details, T event)?
-      overrideOnEventLongPress;
+  final void Function(LongPressStartDetails details, T event)? overrideOnEventLongPress;
 
   /// Returns the tapped event
   final void Function(T)? onEventTap;
@@ -173,8 +172,7 @@ class MonthView<T extends FloatingCalendarEvent> extends StatefulWidget {
   State<MonthView<T>> createState() => _MonthViewState<T>();
 }
 
-class _MonthViewState<T extends FloatingCalendarEvent>
-    extends State<MonthView<T>> {
+class _MonthViewState<T extends FloatingCalendarEvent> extends State<MonthView<T>> {
   final _overlayKey = GlobalKey<DraggableEventOverlayState<T>>();
   final _elevatedEvent = FloatingEventNotifier<T>();
   PageController? _monthPickerController;
@@ -190,8 +188,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
 
   DateTime? get _endDate => widget.controller.endDate;
 
-  DateTime get _monthDate =>
-      _displayedMonth.start.add(const Duration(days: 14));
+  DateTime get _monthDate => _displayedMonth.start.add(const Duration(days: 14));
 
   DateTimeRange get _displayedMonth => widget.controller.state.displayedMonth(
         weekStartsOnSunday: widget.weekStartsOnSunday,
@@ -213,12 +210,9 @@ class _MonthViewState<T extends FloatingCalendarEvent>
   }
 
   RenderBox? _getLayoutBox(DateTime dayDate) =>
-      MonthViewKeys.layouts[dayDate]?.currentContext?.findRenderObject()
-          as RenderBox?;
+      MonthViewKeys.layouts[dayDate]?.currentContext?.findRenderObject() as RenderBox?;
 
-  RenderBox? _getEventBox(T event) =>
-      MonthViewKeys.events[event]?.currentContext?.findRenderObject()
-          as RenderBox?;
+  RenderBox? _getEventBox(T event) => MonthViewKeys.events[event]?.currentContext?.findRenderObject() as RenderBox?;
 
   Future<void> _scrollIfNecessary() async {
     final timelineBox = _getTimelineBox(
@@ -244,8 +238,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
         monthListScrollOffset + moveDistance,
         monthListScrollPosition.maxScrollExtent,
       );
-    } else if (fingerPosition.dy < detectionArea &&
-        monthListScrollOffset > monthListScrollPosition.minScrollExtent) {
+    } else if (fingerPosition.dy < detectionArea && monthListScrollOffset > monthListScrollPosition.minScrollExtent) {
       monthListScrollOffset = max(
         monthListScrollOffset - moveDistance,
         monthListScrollPosition.minScrollExtent,
@@ -331,8 +324,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
           ]).whenComplete(() {
             setState(() {});
           });
-        } else if (state is MonthViewNextMonthSelected ||
-            state is MonthViewPrevMonthSelected) {
+        } else if (state is MonthViewNextMonthSelected || state is MonthViewPrevMonthSelected) {
           _monthPickerController?.animateToPage(
             displayedMonth,
             duration: const Duration(milliseconds: 300),
@@ -359,8 +351,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
                   viewType: CalendarView.month,
                   timelineTheme: widget.timelineTheme,
                   padding: EdgeInsets.only(
-                    top: widget.daysRowTheme.height +
-                        (widget.divider?.height ?? 0),
+                    top: widget.daysRowTheme.height + (widget.divider?.height ?? 0),
                   ),
                   onDateLongPress: _onLongPressStart,
                   onDragUpdate: _autoScrolling,
@@ -418,14 +409,8 @@ class _MonthViewState<T extends FloatingCalendarEvent>
             period: DisplayedPeriod(state.focusedDate),
             theme: widget.monthPickerTheme,
             reverseAnimation: state.reverseAnimation,
-            onLeftButtonPressed:
-                DateUtils.isSameMonth(state.focusedDate, _initialDate)
-                    ? null
-                    : widget.controller.prev,
-            onRightButtonPressed:
-                DateUtils.isSameMonth(state.focusedDate, _endDate)
-                    ? null
-                    : widget.controller.next,
+            onLeftButtonPressed: DateUtils.isSameMonth(state.focusedDate, _initialDate) ? null : widget.controller.prev,
+            onRightButtonPressed: DateUtils.isSameMonth(state.focusedDate, _endDate) ? null : widget.controller.next,
           );
         },
         buildWhen: (previous, current) => !DateUtils.isSameMonth(
@@ -557,9 +542,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
             padding: const EdgeInsets.only(
               bottom: 1,
             ),
-            color: theme.spacingColor ??
-                widget.divider?.color ??
-                Colors.transparent,
+            color: theme.spacingColor ?? widget.divider?.color ?? Colors.transparent,
             child: Stack(
               children: [
                 GridView.count(
@@ -574,9 +557,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
                     ...days.map((day) {
                       final isToday = DateUtils.isSameDay(day, _now);
                       return ColoredBox(
-                        color: (isToday
-                                ? theme.currentDayColor
-                                : theme.dayColor) ??
+                        color: (isToday ? theme.currentDayColor : theme.dayColor) ??
                             Theme.of(context).scaffoldBackgroundColor,
                       );
                     }),
@@ -594,9 +575,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
                     ...days.map(
                       (day) => WidgetSize(
                         onChange: (size) {
-                          if (size != null &&
-                              _rowHeight == 1.0 &&
-                              _rowHeight != size.height) {
+                          if (size != null && _rowHeight == 1.0 && _rowHeight != size.height) {
                             _rowHeight = size.height;
                             if (mounted) {
                               setState(() {});
@@ -720,15 +699,11 @@ class _MonthViewState<T extends FloatingCalendarEvent>
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSelected
-                      ? theme.selectedDayNumberBackgroundColor
-                      : theme.dayNumberBackgroundColor,
+                  color: isSelected ? theme.selectedDayNumberBackgroundColor : theme.dayNumberBackgroundColor,
                 ),
                 child: Text(
                   dayDate.day.toString(),
-                  style: isSelected
-                      ? theme.selectedDayNumberTextStyle
-                      : theme.dayNumberTextStyle,
+                  style: isSelected ? theme.selectedDayNumberTextStyle : theme.dayNumberTextStyle,
                 ),
               ),
               Expanded(
@@ -798,8 +773,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
 
         for (var k = 0; k < previousEvents.length; k++) {
           final previousEvent = previousEvents[k];
-          if (previousEvent.end.isAfter(currentDay) &&
-              k <= currentEvents.length) {
+          if (previousEvent.end.isAfter(currentDay) && k <= currentEvents.length) {
             currentEvents.insert(k, previousEvent);
           }
         }
@@ -826,8 +800,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
       for (var j = 1; j < 7; j++) {
         final currentDay = DateUtils.dateOnly(monthDays[7 * i + j]);
 
-        if (_getEventsOnDay(events, currentDay).length ==
-            _getEventsOnDay(events, currentDay, true).length) {
+        if (_getEventsOnDay(events, currentDay).length == _getEventsOnDay(events, currentDay, true).length) {
           group = LinkedScrollControllerGroup();
         }
         final controller = group.addAndGet();
@@ -850,9 +823,7 @@ class _MonthViewState<T extends FloatingCalendarEvent>
           )
           .toList(growable: false);
     } else {
-      return list
-          .where((event) => DateUtils.isSameDay(event.start, dayDate))
-          .toList();
+      return list.where((event) => DateUtils.isSameDay(event.start, dayDate)).toList();
     }
   }
 

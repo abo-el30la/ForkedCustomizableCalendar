@@ -122,8 +122,7 @@ class DaysView<T extends FloatingCalendarEvent> extends StatefulWidget {
   final Future<CalendarEvent?> Function(DateTime)? onDateLongPress;
 
   /// Overrides the default behavior of the event view's long press
-  final void Function(LongPressStartDetails details, T event)?
-      overrideOnEventLongPress;
+  final void Function(LongPressStartDetails details, T event)? overrideOnEventLongPress;
 
   /// Returns the tapped event
   final void Function(T)? onEventTap;
@@ -153,8 +152,7 @@ class DaysView<T extends FloatingCalendarEvent> extends StatefulWidget {
   State<DaysView<T>> createState() => _DaysViewState<T>();
 }
 
-class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
-    with SingleTickerProviderStateMixin {
+class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>> with SingleTickerProviderStateMixin {
   final _overlayKey = GlobalKey<DraggableEventOverlayState<T>>();
   final _elevatedEvent = FloatingEventNotifier<T>();
   late final PageController _monthPickerController;
@@ -177,25 +175,18 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
 
   double get _dayExtent => _hourExtent * Duration.hoursPerDay;
 
-  RenderBox? _getTimelineBox() =>
-      DaysViewKeys.timeline.currentContext?.findRenderObject() as RenderBox?;
+  RenderBox? _getTimelineBox() => DaysViewKeys.timeline.currentContext?.findRenderObject() as RenderBox?;
 
   RenderBox? _getLayoutBox(DateTime dayDate) =>
-      DaysViewKeys.layouts[dayDate]?.currentContext?.findRenderObject()
-          as RenderBox?;
+      DaysViewKeys.layouts[dayDate]?.currentContext?.findRenderObject() as RenderBox?;
 
-  RenderBox? _getEventBox(T event) =>
-      DaysViewKeys.events[event]?.currentContext?.findRenderObject()
-          as RenderBox?;
+  RenderBox? _getEventBox(T event) => DaysViewKeys.events[event]?.currentContext?.findRenderObject() as RenderBox?;
 
-  List<AllDayCalendarEvent> get _allDayEvents =>
-      widget.events.whereType<AllDayCalendarEvent>().toList();
+  List<AllDayCalendarEvent> get _allDayEvents => widget.events.whereType<AllDayCalendarEvent>().toList();
 
-  List<T> get _events =>
-      widget.events.where((event) => event is! AllDayCalendarEvent).toList();
+  List<T> get _events => widget.events.where((event) => event is! AllDayCalendarEvent).toList();
 
-  void _stopTimelineScrolling() =>
-      _timelineController.jumpTo(_timelineController.offset);
+  void _stopTimelineScrolling() => _timelineController.jumpTo(_timelineController.offset);
 
   Future<void> _scrollIfNecessary() async {
     final timelineBox = _getTimelineBox();
@@ -217,8 +208,7 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
         timelineScrollOffset + moveDistance,
         timelineScrollPosition.maxScrollExtent,
       );
-    } else if (fingerPosition.dy < detectionArea &&
-        timelineScrollOffset > timelineScrollPosition.minScrollExtent) {
+    } else if (fingerPosition.dy < detectionArea && timelineScrollOffset > timelineScrollPosition.minScrollExtent) {
       timelineScrollOffset = max(
         timelineScrollOffset - moveDistance,
         timelineScrollPosition.minScrollExtent,
@@ -250,15 +240,13 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
   void _updateFocusedDate() {
     final daysOffset = _timelineController.offset ~/ _dayExtent;
     final displayedDay = DateUtils.addDaysToDate(_initialDate, daysOffset);
-    final offsetInMinutes =
-        (_timelineController.offset % _minuteExtent).truncate();
+    final offsetInMinutes = (_timelineController.offset % _minuteExtent).truncate();
     final displayedDate = displayedDay.add(Duration(minutes: offsetInMinutes));
 
     widget.controller.setFocusedDate(displayedDate);
   }
 
-  int _getMonthsDeltaForDate(DateTime date) =>
-      DateUtils.monthDelta(_initialDate, date);
+  int _getMonthsDeltaForDate(DateTime date) => DateUtils.monthDelta(_initialDate, date);
 
   double _getDaysListOffsetForDate(DateTime date) => min(
         (date.day - 1) * widget.daysListTheme.itemExtent,
@@ -361,8 +349,7 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
               );
             }
           }
-        } else if (state is DaysViewNextMonthSelected ||
-            state is DaysViewPrevMonthSelected) {
+        } else if (state is DaysViewNextMonthSelected || state is DaysViewPrevMonthSelected) {
           _stopTimelineScrolling();
           // Change a displayed month
           if (widget.daysListBuilder == null) {
@@ -439,13 +426,8 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
             theme: widget.monthPickerTheme,
             reverseAnimation: state.reverseAnimation,
             onLeftButtonPressed:
-                DateUtils.isSameMonth(state.displayedDate, _initialDate)
-                    ? null
-                    : widget.controller.prev,
-            onRightButtonPressed:
-                DateUtils.isSameMonth(state.displayedDate, _endDate)
-                    ? null
-                    : widget.controller.next,
+                DateUtils.isSameMonth(state.displayedDate, _initialDate) ? null : widget.controller.prev,
+            onRightButtonPressed: DateUtils.isSameMonth(state.displayedDate, _endDate) ? null : widget.controller.next,
           );
         },
         buildWhen: (previous, current) => !DateUtils.isSameMonth(
@@ -469,12 +451,9 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
             visibleDays: 1,
             allDayEvents: _allDayEvents
                 .where(
-                  (element) =>
-                      DateTimeRange(start: element.start, end: element.end)
-                          .days
-                          .any(
-                            (d) => DateUtils.isSameDay(d, state.focusedDate),
-                          ),
+                  (element) => DateTimeRange(start: element.start, end: element.end).days.any(
+                        (d) => DateUtils.isSameDay(d, state.focusedDate),
+                      ),
                 )
                 .toList(),
             onShowMoreTap: widget.onAllDayEventsShowMoreTap,
@@ -530,10 +509,8 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
         controller: _monthPickerController,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, pageIndex) {
-          final monthDate =
-              DateUtils.addMonthsToMonthDate(_initialDate, pageIndex);
-          final daysInMonth =
-              DateUtils.getDaysInMonth(monthDate.year, monthDate.month);
+          final monthDate = DateUtils.addMonthsToMonthDate(_initialDate, pageIndex);
+          final daysInMonth = DateUtils.getDaysInMonth(monthDate.year, monthDate.month);
 
           return LayoutBuilder(
             builder: (context, constraints) {
@@ -599,9 +576,7 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
         bottom: theme.padding.bottom,
       ),
       itemExtent: _dayExtent,
-      itemCount: (_endDate != null)
-          ? _endDate!.difference(_initialDate).inDays + 1
-          : null,
+      itemCount: (_endDate != null) ? _endDate!.difference(_initialDate).inDays + 1 : null,
       itemBuilder: (context, index) {
         final dayDate = DateUtils.addDaysToDate(_initialDate, index);
         final isToday = DateUtils.isSameDay(dayDate, _now);

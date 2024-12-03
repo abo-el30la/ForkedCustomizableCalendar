@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_customizable_calendar/src/ui/themes/themes.dart';
 import 'package:flutter_customizable_calendar/src/utils/utils.dart';
 
+import '../../utils/lib_sizes.dart';
+
 /// It displays a time scale of a day view (with hours and minutes marks).
 class TimeScale extends StatefulWidget {
   /// Creates view of a time scale.
@@ -33,7 +35,7 @@ class _TimeScaleState extends State<TimeScale> {
     return CustomPaint(
       size: Size(
         widget.theme.width,
-        widget.theme.hourExtent * Duration.hoursPerDay,
+        widget.theme.hourExtent * LibSizes.hourCount,
       ),
       painter: _scale,
       foregroundPainter: widget.showCurrentTimeMark ? _currentTimeMark : null,
@@ -74,11 +76,11 @@ class _ScalePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final hourExtent = size.height / Duration.hoursPerDay;
+    final hourExtent = size.height / LibSizes.hourCount;
     // print('paint - hourExtent: $hourExtent');
     final quarterHeight = hourExtent / 4;
 
-    for (var hour = 0; hour < Duration.hoursPerDay; hour += 1) {
+    for (var hour = 8; hour < 23; hour += 1) {
       final time = DateTime(
         dayDate.year,
         dayDate.month,
@@ -93,7 +95,7 @@ class _ScalePainter extends CustomPainter {
         textAlign: _textAlign,
         textDirection: TextDirection.ltr,
       );
-      final hourOffset = hourExtent * hour;
+      final hourOffset = hourExtent * (hour - 8);
       // print('paint - hourOffset: $hourOffset');
       // Draw an hour text
       hourTextPainter
@@ -182,7 +184,8 @@ class _ScalePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _ScalePainter oldDelegate) => theme != oldDelegate.theme || dayDate != oldDelegate.dayDate;
+  bool shouldRepaint(covariant _ScalePainter oldDelegate) =>
+      theme != oldDelegate.theme || dayDate != oldDelegate.dayDate;
 
   TextAlign get _textAlign {
     switch (theme.marksAlign) {
@@ -248,5 +251,6 @@ class _CurrentTimeMarkPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _CurrentTimeMarkPainter oldDelegate) => theme != oldDelegate.theme || currentTime != oldDelegate.currentTime;
+  bool shouldRepaint(covariant _CurrentTimeMarkPainter oldDelegate) =>
+      theme != oldDelegate.theme || currentTime != oldDelegate.currentTime;
 }

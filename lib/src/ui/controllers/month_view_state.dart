@@ -17,7 +17,7 @@ abstract class MonthViewState extends Equatable {
   /// The month range which is currently displayed in the month view.
 
   DateTimeRange displayedMonth({
-    bool weekStartsOnSunday = false,
+    bool weekStartsOnSunday = true,
     int numberOfWeeks = 6,
   }) =>
       focusedDate.monthViewRange(
@@ -50,8 +50,7 @@ class MonthViewCurrentMonthIsSet extends MonthViewState {
 /// The state of [MonthViewController] when the previous month is selected.
 class MonthViewPrevMonthSelected extends MonthViewState {
   /// Creates [MonthViewPrevMonthSelected] instance.
-  const MonthViewPrevMonthSelected({required super.focusedDate})
-      : super(reverseAnimation: true);
+  const MonthViewPrevMonthSelected({required super.focusedDate}) : super(reverseAnimation: true);
 }
 
 /// The state of [MonthViewController] when the next month is selected.

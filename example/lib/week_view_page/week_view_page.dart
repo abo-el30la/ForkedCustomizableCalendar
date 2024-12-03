@@ -40,8 +40,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
           bottom: false,
           child: Column(
             children: [
-              Expanded(child:
-                  BlocBuilder<EventsWithLabelCubit, EventsWithLabelState>(
+              Expanded(child: BlocBuilder<EventsWithLabelCubit, EventsWithLabelState>(
                 builder: (context, state) {
                   if (state is! EventsWithLabelInitialized) {
                     return const Center(
@@ -69,11 +68,9 @@ class _WeekViewPageState extends State<WeekViewPage> {
                         eventHeight: 32,
                         backgroundColor: Colors.white,
                         containerPadding: EdgeInsets.zero,
-                        eventPadding:
-                            const EdgeInsets.symmetric(horizontal: 4.0),
+                        eventPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                         eventMargin: EdgeInsets.zero,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 4.0, vertical: 2.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
                         borderRadius: 0,
                         elevation: 0,
                         alwaysShowEmptyRows: true,
@@ -98,7 +95,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
                           vertical: 2,
                         ),
                         child: Text(
-                          "show more (${events.length - visible.length})",
+                          'show more (${events.length - visible.length})',
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -203,7 +200,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
     );
   }
 
-  Widget _dayRowBuilder(context,DateTime day,isSelected, events) {
+  Widget _dayRowBuilder(context, DateTime day, isSelected, events) {
     return Column(children: [
       Text(
         DateFormat.EEEE().format(day).substring(0, 3),
@@ -242,7 +239,7 @@ class _WeekViewPageState extends State<WeekViewPage> {
     ]);
   }
 
-  Widget _buildWeekPicker(BuildContext context, events,DateTimeRange range) {
+  Widget _buildWeekPicker(BuildContext context, events, DateTimeRange range) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
