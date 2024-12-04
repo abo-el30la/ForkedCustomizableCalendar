@@ -15,11 +15,11 @@ extension DurationInWeeks on Duration {
 ///
 extension WeekUtils on DateTime {
   /// Returns all day dates of current week from Monday (1) to Sunday (7).
-  DateTimeRange weekRange(int visibleDays) {
+  DateTimeRange weekRange(int visibleDays, {bool weekStartsOnSunday = true}) {
     if (visibleDays == 7) {
       return DateTimeRange(
-        start: DateUtils.addDaysToDate(this, 1 - weekday),
-        end: DateUtils.addDaysToDate(this, 8 - weekday),
+        start: DateUtils.addDaysToDate(this, 1 - weekday - (weekStartsOnSunday ? 1 : 0)),
+        end: DateUtils.addDaysToDate(this, 8 - weekday - (weekStartsOnSunday ? 1 : 0)),
       );
     }
     final range = DateTimeRange(
