@@ -227,12 +227,7 @@ class _CurrentTimeMarkPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final secondExtent = size.height / (LibSizes.hourCount * Duration.secondsPerHour);
     // print('paint - secondExtent: $secondExtent , ${Duration.secondsPerDay}');
-    final dayDate = DateTime(
-      currentTime.value.year,
-      currentTime.value.month,
-      currentTime.value.day,
-      8,
-    );
+    final dayDate = currentTime.value.add(const Duration(hours: LibSizes.startHour));
     // print('paint - dayDate: $dayDate');
     final timeDiff = currentTime.value.difference(dayDate);
     // print('paint - timeDiff: ${timeDiff.inSeconds}');
@@ -242,8 +237,9 @@ class _CurrentTimeMarkPainter extends CustomPainter {
     const circleRadius = 5.0; // adjust the radius of the circle as needed
 
     // final circleCenter = Offset(0, dy); // center point of the circle
-    final circleCenter = Offset(3 + circleRadius, dy); // center point of the circle with padding
-    // // draw current time mark depending on language
+    final circleCenter = Offset(3 + circleRadius, dy);
+    // center point of the circle with padding
+    // draw current time mark depending on language
     canvas
       ..drawCircle(
         Offset(

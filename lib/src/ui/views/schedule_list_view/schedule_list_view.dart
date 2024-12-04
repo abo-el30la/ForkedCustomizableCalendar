@@ -98,8 +98,7 @@ class ScheduleListView<T extends CalendarEvent> extends StatefulWidget {
   State<ScheduleListView<T>> createState() => _ScheduleListViewState<T>();
 }
 
-class _ScheduleListViewState<T extends CalendarEvent>
-    extends State<ScheduleListView<T>> {
+class _ScheduleListViewState<T extends CalendarEvent> extends State<ScheduleListView<T>> {
   final weekDayFormatter = DateFormat('EE');
   final monthDayFormatter = DateFormat('d');
 
@@ -114,8 +113,7 @@ class _ScheduleListViewState<T extends CalendarEvent>
     _scrollController = ItemScrollController();
     _itemPositionsListener = ItemPositionsListener.create();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _scrollToCurrentPosition(animate: false, events: _getGrouped())
-          .then((value) {
+      _scrollToCurrentPosition(animate: false, events: _getGrouped()).then((value) {
         _itemPositionsListener.itemPositions.addListener(() {
           final index = _itemPositionsListener.itemPositions.value
               .sorted(
@@ -139,13 +137,11 @@ class _ScheduleListViewState<T extends CalendarEvent>
   Widget build(BuildContext context) {
     final grouped = _getGrouped();
 
-    return BlocListener<ScheduleListViewController,
-        ScheduleListViewControllerState>(
+    return BlocListener<ScheduleListViewController, ScheduleListViewControllerState>(
       bloc: widget.controller,
       listenWhen: (previous, current) => true,
       listener: (context, state) {
-        if (state is ScheduleListViewControllerCurrentDateIsSet &&
-            state.animateList) {
+        if (state is ScheduleListViewControllerCurrentDateIsSet && state.animateList) {
           _scrollToCurrentPosition(events: grouped);
         }
       },
@@ -156,8 +152,7 @@ class _ScheduleListViewState<T extends CalendarEvent>
             const SizedBox(
               height: 8,
             ),
-            BlocBuilder<ScheduleListViewController,
-                ScheduleListViewControllerState>(
+            BlocBuilder<ScheduleListViewController, ScheduleListViewControllerState>(
               bloc: widget.controller,
               buildWhen: (previous, current) =>
                   current is ScheduleListViewControllerCurrentDateIsSet &&

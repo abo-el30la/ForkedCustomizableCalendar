@@ -117,8 +117,7 @@ class AllDaysEventsList extends StatefulWidget {
 }
 
 class _AllDaysEventsListState extends State<AllDaysEventsList> {
-  AllDayEventsShowMoreButtonTheme get _showMoreButtonTheme =>
-      _theme.showMoreButtonTheme;
+  AllDayEventsShowMoreButtonTheme get _showMoreButtonTheme => _theme.showMoreButtonTheme;
 
   AllDayEventsTheme get _theme => widget.theme;
 
@@ -134,8 +133,7 @@ class _AllDaysEventsListState extends State<AllDaysEventsList> {
 
   int get _maxRows => min(_rowsNumber, _theme.listMaxRowsVisible);
 
-  double get _eventHeight =>
-      _theme.eventHeight + (_theme.eventPadding.vertical);
+  double get _eventHeight => _theme.eventHeight + (_theme.eventPadding.vertical);
 
   double get _getContainerHeight =>
       _eventHeight * _maxRows +
@@ -144,15 +142,10 @@ class _AllDaysEventsListState extends State<AllDaysEventsList> {
           : _theme.containerPadding.vertical);
 
   double get _getShowMoreButtonThemeHeight =>
-      _showMoreButtonTheme.height +
-      _showMoreButtonTheme.padding.vertical +
-      (_theme.containerPadding.vertical);
+      _showMoreButtonTheme.height + _showMoreButtonTheme.padding.vertical + (_theme.containerPadding.vertical);
 
   bool get _showShowMoreButton {
-    return (widget.theme.alwaysShowEmptyRows
-            ? (_rowsNumber - 1)
-            : _rowsNumber) >
-        _maxRows;
+    return (widget.theme.alwaysShowEmptyRows ? (_rowsNumber - 1) : _rowsNumber) > _maxRows;
   }
 
   double _showMoreButtonHeight = 0;
@@ -180,8 +173,7 @@ class _AllDaysEventsListState extends State<AllDaysEventsList> {
 
     for (var i = 0; i < row.events.length; i++) {
       final e = row.events[i];
-      allPreviousEventsWidth +=
-          e.width + (allPreviousEventsWidth - e.paddingLeft);
+      allPreviousEventsWidth += e.width + (allPreviousEventsWidth - e.paddingLeft);
     }
 
     return (allPreviousEventsWidth + eventWidth) <= widget.width;
@@ -202,16 +194,11 @@ class _AllDaysEventsListState extends State<AllDaysEventsList> {
     for (var i = 0; i < widget.allDayEvents.length; i++) {
       final event = widget.allDayEvents[i];
 
-      final start =
-          weekRange.start.isAfter(event.start) ? weekRange.start : event.start;
+      final start = weekRange.start.isAfter(event.start) ? weekRange.start : event.start;
 
-      final paddingLeft =
-          (start.difference(weekRange.start).inDays * oneDayWidth).abs();
+      final paddingLeft = (start.difference(weekRange.start).inDays * oneDayWidth).abs();
       final width = min(
-        widget.width -
-            paddingLeft -
-            _theme.eventPadding.horizontal -
-            _theme.containerPadding.horizontal,
+        widget.width - paddingLeft - _theme.eventPadding.horizontal - _theme.containerPadding.horizontal,
         (event.end.difference(start).inDays * oneDayWidth).abs(),
       );
 
@@ -286,10 +273,7 @@ class _AllDaysEventsListState extends State<AllDaysEventsList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.view == CalendarView.week)
-            ..._buildWeekListView()
-          else
-            ..._buildDaysListView(),
+          if (widget.view == CalendarView.week) ..._buildWeekListView() else ..._buildDaysListView(),
           if (_showShowMoreButton)
             WidgetSize(
               onChange: (size) {
@@ -415,8 +399,7 @@ class _AllDaysEventsListState extends State<AllDaysEventsList> {
             child: Container(
               decoration: BoxDecoration(
                 color: _showMoreButtonTheme.backgroundColor,
-                borderRadius:
-                    BorderRadius.circular(_showMoreButtonTheme.borderRadius),
+                borderRadius: BorderRadius.circular(_showMoreButtonTheme.borderRadius),
               ),
               child: Center(
                 child: Text(

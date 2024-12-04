@@ -144,7 +144,8 @@ class CalendarPage<T extends FloatingCalendarEvent> extends StatefulWidget {
   State<CalendarPage<T>> createState() => _CalendarPageState<T>();
 }
 
-class _CalendarPageState<T extends FloatingCalendarEvent> extends State<CalendarPage<T>> with SingleTickerProviderStateMixin {
+class _CalendarPageState<T extends FloatingCalendarEvent> extends State<CalendarPage<T>>
+    with SingleTickerProviderStateMixin {
   final _daysViewController = DaysViewController(
     initialDate: _initialDate,
     endDate: _endDate,
@@ -395,7 +396,9 @@ class _CalendarPageState<T extends FloatingCalendarEvent> extends State<Calendar
                   icon: const Icon(Icons.arrow_back_ios),
                 ),
                 Text(
-                  currentTime.year != DateTime.now().year ? DateFormat('MMMM yyyy').format(currentTime) : DateFormat('MMMM').format(currentTime),
+                  currentTime.year != DateTime.now().year
+                      ? DateFormat('MMMM yyyy').format(currentTime)
+                      : DateFormat('MMMM').format(currentTime),
                   style: _textStyle.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -515,38 +518,40 @@ class _CalendarPageState<T extends FloatingCalendarEvent> extends State<Calendar
 
   Map<Type, EventBuilder<CalendarEvent>> _getEventBuilders() {
     return {
-      ImageCalendarEvent: <CustomEvent>(context, event) => Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              image: DecorationImage(
-                image: AssetImage(event.imgAsset),
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-              ),
+      ImageCalendarEvent: <CustomEvent>(context, event) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            image: DecorationImage(
+              image: AssetImage(event.imgAsset.toString()),
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
             ),
-            child: Container(
-              color: Colors.black.withOpacity(0.1),
-              padding: const EdgeInsets.all(4),
-              child: Text(
-                event.title,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                      color: Colors.black,
-                      blurRadius: 8,
-                    ),
-                    Shadow(
-                      color: Colors.black45,
-                      blurRadius: 16,
-                    ),
-                  ],
-                ),
+          ),
+          child: Container(
+            color: Colors.black.withOpacity(0.1),
+            padding: const EdgeInsets.all(4),
+            child: Text(
+              event.title.toString(),
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  Shadow(
+                    color: Colors.black,
+                    blurRadius: 8,
+                  ),
+                  Shadow(
+                    color: Colors.black45,
+                    blurRadius: 16,
+                  ),
+                ],
               ),
             ),
           ),
+        );
+      },
     };
   }
 
