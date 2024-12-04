@@ -225,9 +225,17 @@ class _CurrentTimeMarkPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final secondExtent = size.height / Duration.secondsPerDay;
-    final dayDate = DateUtils.dateOnly(currentTime.value);
+    final secondExtent = size.height / (LibSizes.hourCount * Duration.secondsPerHour);
+    // print('paint - secondExtent: $secondExtent , ${Duration.secondsPerDay}');
+    final dayDate = DateTime(
+      currentTime.value.year,
+      currentTime.value.month,
+      currentTime.value.day,
+      8,
+    );
+    // print('paint - dayDate: $dayDate');
     final timeDiff = currentTime.value.difference(dayDate);
+    // print('paint - timeDiff: ${timeDiff.inSeconds}');
     final currentTimeOffset = timeDiff.inSeconds * secondExtent;
     final dy = currentTimeOffset - theme.strokeWidth / 2;
 
@@ -236,18 +244,27 @@ class _CurrentTimeMarkPainter extends CustomPainter {
     // final circleCenter = Offset(0, dy); // center point of the circle
     final circleCenter = Offset(3 + circleRadius, dy); // center point of the circle with padding
     // // draw current time mark depending on language
-    canvas.drawCircle(
-      Offset(isArabic ? size.width - (circleCenter.dx - 3) : circleCenter.dx, circleCenter.dy),
-      circleRadius,
-      Paint()..color = theme.color,
-    );
     canvas
-      //..drawCircle(circleCenter, circleRadius, theme.painter)
+      ..drawCircle(
+        Offset(
+          isArabic ? size.width - (circleCenter.dx - 3) : circleCenter.dx,
+          circleCenter.dy,
+        ),
+        circleRadius,
+        Paint()..color = theme.color,
+      )
       ..drawLine(
         Offset(isArabic ? size.width - (theme.length) : 5, dy),
         Offset(isArabic ? size.width : theme.length, dy),
         theme.painter,
       );
+    // canvas
+    //   //..drawCircle(circleCenter, circleRadius, theme.painter)
+    //   .drawLine(
+    //     Offset(isArabic ? size.width - (theme.length) : 5, dy),
+    //     Offset(isArabic ? size.width : theme.length, dy),
+    //     theme.painter,
+    //   );
   }
 
   @override
