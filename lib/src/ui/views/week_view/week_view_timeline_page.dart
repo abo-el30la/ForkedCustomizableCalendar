@@ -104,8 +104,9 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
   @override
   void initState() {
     _daysRowController = PageController(
-      initialPage:
-          widget.weekPickerController.positions.isEmpty ? widget.weekPickerController.initialPage : widget.weekPickerController.page?.toInt() ?? 0,
+      initialPage: widget.weekPickerController.positions.isEmpty
+          ? widget.weekPickerController.initialPage
+          : widget.weekPickerController.page?.toInt() ?? 0,
     );
     _timelineController = ScrollController(
       initialScrollOffset: widget.controller.timelineOffset ?? _focusedDate.hour * _hourExtent,
@@ -390,7 +391,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
   List<DateTime> _getWeekDays(int pageIndex) {
     final weekDays = DateUtils.addDaysToDate(
       widget.controller.initialDate,
-      (pageIndex + 1) * widget.controller.visibleDays,
+      (pageIndex) * widget.controller.visibleDays,
     ).weekRange(widget.controller.visibleDays).days;
     // print("week days ${weekDays}");
     return weekDays;
@@ -448,8 +449,12 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
                     child: widget.dayRowBuilder!(
                       context,
                       dayDate,
-                      selectedDay.year == dayDate.year && selectedDay.month == dayDate.month && selectedDay.day == dayDate.day,
-                      widget.events.where((element) => element.start.isAfter(dayDate) && element.start.isBefore(dayDate)).toList(),
+                      selectedDay.year == dayDate.year &&
+                          selectedDay.month == dayDate.month &&
+                          selectedDay.day == dayDate.day,
+                      widget.events
+                          .where((element) => element.start.isAfter(dayDate) && element.start.isBefore(dayDate))
+                          .toList(),
                     ),
                   ),
                 ),
