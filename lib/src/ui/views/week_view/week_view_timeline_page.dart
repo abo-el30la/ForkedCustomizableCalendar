@@ -391,7 +391,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
   List<DateTime> _getWeekDays(int pageIndex) {
     final weekDays = DateUtils.addDaysToDate(
       widget.controller.initialDate,
-      (pageIndex) * widget.controller.visibleDays,
+      pageIndex * widget.controller.visibleDays,
     ).weekRange(widget.controller.visibleDays).days;
     // print("week days ${weekDays}");
     return weekDays;
