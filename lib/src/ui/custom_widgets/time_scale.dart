@@ -32,10 +32,11 @@ class _TimeScaleState extends State<TimeScale> {
 
   @override
   Widget build(BuildContext context) {
+    print('build - TimeScale ${widget.showCurrentTimeMark}');
     return CustomPaint(
       size: Size(
         widget.theme.width,
-        widget.theme.hourExtent * LibSizes.hourCount,
+        widget.theme.hourExtent * LibSizes.hoursInDay,
       ),
       painter: _scale,
       foregroundPainter: widget.showCurrentTimeMark ? _currentTimeMark : null,
@@ -76,7 +77,7 @@ class _ScalePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final hourExtent = size.height / LibSizes.hourCount;
+    final hourExtent = size.height / LibSizes.hoursInDay;
     // print('paint - hourExtent: $hourExtent');
     final quarterHeight = hourExtent / 4;
 
@@ -107,18 +108,20 @@ class _ScalePainter extends CustomPainter {
           canvas,
           Offset(-1, hourOffset - hourTextPainter.height / 2),
         );
+      // draw current time mark depending on language
+
       // print('paint - hourTextPainter.height: ${hourTextPainter.height}');
       // Draw a line next to the hour text
-      canvas.drawLine(
-        Offset(isArabic ? size.width - 55 : size.width, hourOffset),
-        Offset(
-          isArabic ? canvas.getDestinationClipBounds().left : canvas.getDestinationClipBounds().right,
-          hourOffset,
-        ),
-        Paint()
-          ..color = const Color(0xff8C8F90)
-          ..strokeWidth = 0.2,
-      );
+      // canvas.drawLine(
+      //   Offset(isArabic ? size.width - 55 : size.width, hourOffset),
+      //   Offset(
+      //     isArabic ? canvas.getDestinationClipBounds().left : canvas.getDestinationClipBounds().right,
+      //     hourOffset,
+      //   ),
+      //   Paint()
+      //     ..color = const Color(0xff8C8F90)
+      //     ..strokeWidth = 0.2,
+      // );
 
       if (theme.drawHalfHourMarks) {
         // Draw a half-hour time text
@@ -150,16 +153,16 @@ class _ScalePainter extends CustomPainter {
           );
 
         // Draw a line next to the half-hour text
-        canvas.drawLine(
-          Offset(isArabic ? size.width - 55 : size.width, halfHourOffset),
-          Offset(
-            isArabic ? canvas.getDestinationClipBounds().left : canvas.getDestinationClipBounds().right,
-            halfHourOffset,
-          ),
-          Paint()
-            ..color = const Color(0xff8C8F90)
-            ..strokeWidth = 0.5,
-        );
+        // canvas.drawLine(
+        //   Offset(isArabic ? size.width - 55 : size.width, halfHourOffset),
+        //   Offset(
+        //     isArabic ? canvas.getDestinationClipBounds().left : canvas.getDestinationClipBounds().right,
+        //     halfHourOffset,
+        //   ),
+        //   Paint()
+        //     ..color = const Color(0xff8C8F90)
+        //     ..strokeWidth = 0.5,
+        // );
       }
 
       if (theme.drawQuarterHourMarks) {
@@ -225,43 +228,74 @@ class _CurrentTimeMarkPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final secondExtent = size.height / (LibSizes.hourCount * Duration.secondsPerHour);
+    final secondExtent = size.height / (Duration.secondsPerDay + (LibSizes.startHour * Duration.secondsPerHour));
     // print('paint - secondExtent: $secondExtent , ${Duration.secondsPerDay}');
-    final dayDate = currentTime.value.add(const Duration(hours: LibSizes.startHour));
-    // print('paint - dayDate: $dayDate');
+    final dayDate = DateUtils.dateOnly(currentTime.value);
     final timeDiff = currentTime.value.difference(dayDate);
-    // print('paint - timeDiff: ${timeDiff.inSeconds}');
     final currentTimeOffset = timeDiff.inSeconds * secondExtent;
     final dy = currentTimeOffset - theme.strokeWidth / 2;
 
-    const circleRadius = 5.0; // adjust the radius of the circle as needed
-
-    // final circleCenter = Offset(0, dy); // center point of the circle
+    // canvas.drawLine(
+    //   Offset(8, dy),
+    //   Offset(theme.length, dy),
+    //   theme.painter,
+    // );
+    // draw circle mark depending on language
+    const circleRadius = 5.0;
     final circleCenter = Offset(3 + circleRadius, dy);
-    // center point of the circle with padding
-    // draw current time mark depending on language
-    canvas
-      ..drawCircle(
-        Offset(
-          isArabic ? size.width - (circleCenter.dx - 3) : circleCenter.dx,
-          circleCenter.dy,
-        ),
-        circleRadius,
-        Paint()..color = theme.color,
-      )
-      ..drawLine(
-        Offset(isArabic ? size.width - (theme.length) : 5, dy),
-        Offset(isArabic ? size.width : theme.length, dy),
-        theme.painter,
-      );
-    // canvas
-    //   //..drawCircle(circleCenter, circleRadius, theme.painter)
-    //   .drawLine(
-    //     Offset(isArabic ? size.width - (theme.length) : 5, dy),
-    //     Offset(isArabic ? size.width : theme.length, dy),
-    //     theme.painter,
-    //   );
+    canvas.drawLine(
+      Offset(isArabic ? size.width - (theme.length) : 5, dy),
+      Offset((isArabic ? canvas.getDestinationClipBounds().left : canvas.getDestinationClipBounds().right) - 24, dy),
+      theme.painter,
+    );
+    canvas.drawCircle(
+      Offset(
+        isArabic ? size.width - (circleCenter.dx - 3) : circleCenter.dx,
+        circleCenter.dy,
+      ),
+      circleRadius,
+      Paint()..color = theme.color,
+    );
   }
+
+  // @override
+  // void paint(Canvas canvas, Size size) {
+  //   final secondExtent = size.height / (LibSizes.hoursInDay * Duration.secondsPerHour);
+  //   print('paint - secondExtent: $secondExtent , ${Duration.secondsPerDay}');
+  //   final dayDate = currentTime.value.add(const Duration(hours: LibSizes.startHour));
+  //   // print('paint - dayDate: $dayDate');
+  //   final timeDiff = currentTime.value.difference(dayDate);
+  //   // print('paint - timeDiff: ${timeDiff.inSeconds}');
+  //   final currentTimeOffset = timeDiff.inSeconds * secondExtent;
+  //   final dy = currentTimeOffset - theme.strokeWidth / 2;
+  //
+  //   const circleRadius = 5.0; // adjust the radius of the circle as needed
+  //
+  //   // final circleCenter = Offset(0, dy); // center point of the circle
+  //   final circleCenter = Offset(3 + circleRadius, dy);
+  //   // center point of the circle with padding
+  //   // draw current time mark depending on language
+  //   canvas
+  //     ..drawCircle(
+  //       Offset(
+  //         isArabic ? size.width - (circleCenter.dx - 3) : circleCenter.dx,
+  //         circleCenter.dy,
+  //       ),
+  //       circleRadius,
+  //       Paint()..color = theme.color,
+  //     )
+  //     ..drawLine(
+  //       Offset(isArabic ? size.width - (theme.length) : 5, dy),
+  //       Offset(isArabic ? size.width : theme.length, dy),
+  //       theme.painter,
+  //     );
+  //   // canvas.drawCircle(circleCenter, circleRadius, theme.painter);
+  //   // canvas.drawLine(
+  //   //   Offset(isArabic ? size.width - (theme.length) : 5, dy),
+  //   //   Offset(isArabic ? size.width : theme.length, dy),
+  //   //   theme.painter,
+  //   // );
+  // }
 
   @override
   bool shouldRepaint(covariant _CurrentTimeMarkPainter oldDelegate) =>

@@ -63,7 +63,9 @@ class _WeekViewTimelineWidgetState extends State<WeekViewTimelineWidget> {
       controller: _scrollController,
       child: SizedBox(
         // 24 hours * LibSizes.hourExtent  ->  24 * 150
-        height: LibSizes.hourCount * LibSizes.hourExtent,
+
+        // height: 24 * 150,
+        height: LibSizes.hoursInDay * LibSizes.hourExtent,
         // width: 30,
         child: Row(
           mainAxisSize: MainAxisSize.min,

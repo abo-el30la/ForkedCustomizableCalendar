@@ -283,7 +283,7 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
     print('initialPage : ${_displayedWeek.start}');
     print('initialPage : ${_initialWeek.start}');
     _weekPickerController = PageController(
-      initialPage: initialPage - 1,
+      initialPage: initialPage,
     );
   }
 

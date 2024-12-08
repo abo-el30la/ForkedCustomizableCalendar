@@ -18,14 +18,21 @@ extension WeekUtils on DateTime {
   DateTimeRange weekRange(int visibleDays, {bool weekStartsOnSunday = true}) {
     if (visibleDays == 7) {
       return DateTimeRange(
-        start: DateUtils.addDaysToDate(this, 1 - weekday - (weekStartsOnSunday ? 1 : 0)),
-        end: DateUtils.addDaysToDate(this, 8 - weekday - (weekStartsOnSunday ? 1 : 0)),
+        start: DateUtils.addDaysToDate(
+          this,
+          1 - weekday - (weekStartsOnSunday ? 1 : 0),
+        ),
+        end: DateUtils.addDaysToDate(
+          this,
+          8 - weekday - (weekStartsOnSunday ? 1 : 0),
+        ),
       );
     }
     final range = DateTimeRange(
       start: DateUtils.addDaysToDate(this, 0),
       end: DateUtils.addDaysToDate(this, visibleDays),
     );
+    print('Week range: $range');
     return range;
   }
 

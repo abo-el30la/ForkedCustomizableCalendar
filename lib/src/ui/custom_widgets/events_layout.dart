@@ -7,6 +7,8 @@ import 'package:flutter_customizable_calendar/src/ui/custom_widgets/widget_size.
 import 'package:flutter_customizable_calendar/src/ui/themes/themes.dart';
 import 'package:flutter_customizable_calendar/src/utils/utils.dart';
 
+import '../../utils/lib_sizes.dart';
+
 /// A day view which automatically creates views of given [breaks] and [events]
 /// and sets their positions on it.
 class EventsLayout<T extends FloatingCalendarEvent> extends StatefulWidget {
@@ -98,12 +100,14 @@ class _EventsLayoutState<T extends FloatingCalendarEvent> extends State<EventsLa
 
   int get maxEvents => max(
         0,
-        ((_eventsContainerHeight - _getShowMoreButtonTheme.height) / (_getShowMoreButtonTheme.height + _getShowMoreButtonTheme.padding.vertical))
+        ((_eventsContainerHeight - _getShowMoreButtonTheme.height) /
+                (_getShowMoreButtonTheme.height + _getShowMoreButtonTheme.padding.vertical))
             .floor(),
       );
 
   bool _eventPresentAtDay<E extends CalendarEvent>(E event) =>
-      DateUtils.isSameDay(event.start, widget.dayDate) || (event.start.isBefore(widget.dayDate) && event.end.isAfter(widget.dayDate));
+      DateUtils.isSameDay(event.start, widget.dayDate) ||
+      (event.start.isBefore(widget.dayDate) && event.end.isAfter(widget.dayDate));
 
   List<E> _getEventsOnDay<E extends CalendarEvent>(List<E> list) {
     // For month view, daily event list is passed in constructor
@@ -383,7 +387,8 @@ class _EventsLayoutDelegate<T extends FloatingCalendarEvent> extends MultiChildL
 
   @override
   void performLayout(Size size) {
-    final minuteExtent = size.height / Duration.minutesPerDay;
+    // final minuteExtent = size.height / Duration.minutesPerDay;
+    final minuteExtent = size.height / (Duration.minutesPerHour * LibSizes.hoursInDay);
 
     // Laying out all breaks first
     for (final event in breaks) {

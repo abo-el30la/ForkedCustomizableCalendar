@@ -115,7 +115,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
       initialScrollOffset: widget.controller.timelineOffset ??
           (_focusedDate
                   .subtract(
-                    const Duration(hours: LibSizes.startHour),
+                    const Duration(hours: Duration.hoursPerDay - LibSizes.hoursInDay),
                   )
                   .hour) *
               _hourExtent,
@@ -146,10 +146,14 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
     const timeScaleWidth = 0.0;
     // print('time scale width $timeScaleWidth');
     final weekDays = widget.controller.state.focusedDate
+        .subtract(
+          const Duration(hours: Duration.hoursPerDay - LibSizes.hoursInDay),
+        )
         .weekRange(
           widget.controller.visibleDays,
         )
         .days;
+    final bool isToday = DateUtils.isSameDay(_now, selectedDay);
 
     return Stack(
       fit: StackFit.expand,
@@ -271,10 +275,13 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
                                   children: [
                                     TimeScale(
                                       isArabic: widget.isArabic,
-                                      showCurrentTimeMark: weekDays.first.isSameWeekAs(
-                                        widget.controller.visibleDays,
-                                        _now,
-                                      ),
+                                      // showCurrentTimeMark: weekDays.first.isSameWeekAs(
+                                      //   widget.controller.visibleDays,
+                                      //   _now.subtract(
+                                      //     const Duration(hours: LibSizes.startHour),
+                                      //   ),
+                                      // ),
+                                      showCurrentTimeMark: isToday,
                                       theme: widget.theme.timeScaleTheme,
                                     ),
                                   ],
@@ -310,8 +317,9 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
                                   return Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const SizedBox(
+                                      Container(
                                         width: 60,
+                                        // color: Colors.blue.withOpacity(0.1),
                                       ),
                                       Expanded(child: _buildBody(weekDays)),
                                     ],
@@ -338,7 +346,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
     return DateFormat('MM').format(monthDate);
   }
 
-  Padding _buildBody(
+  Widget _buildBody(
     List<DateTime> weekDays,
   ) {
     return Padding(
@@ -563,31 +571,41 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
       );
 
   Widget _singleDayView(DateTime dayDate) {
-    print('day date $dayDate');
-    final dayFrom8 = dayDate.add(const Duration(hours: LibSizes.startHour));
+    print('_singleDayView dayDate $dayDate');
+    final dayFrom8 = dayDate.add(const Duration(hours: LibSizes.startHour, minutes: 0));
+    print('_singleDayView dayFrom8 $dayFrom8');
+    widget.events.forEach((element) {
+      print('_singleDayView start ${element.start}');
+      print('_singleDayView end ${element.end}');
+      print('_singleDayView duration ${element.duration}');
+    });
     return Expanded(
-      child: RenderIdProvider(
-        id: dayFrom8,
-        child: Container(
-          /// TODO : Padding to fit events at time scale
-          padding: EdgeInsets.only(
-            top: widget.theme.padding.top,
-            bottom: widget.theme.padding.bottom,
-          ),
-          color: Colors.transparent, // Needs for hitTesting
-          child: EventsLayout<T>(
-            // key: ValueKey(dayDate),
-            dayDate: dayFrom8,
-            eventBuilders: widget.eventBuilders,
-            viewType: CalendarView.week,
-            overlayKey: widget.overlayKey,
-            layoutsKeys: widget.layoutKeys,
-            eventsKeys: widget.eventKeys,
-            timelineTheme: widget.theme,
-            breaks: widget.breaks,
-            events: widget.events,
-            elevatedEvent: widget.elevatedEvent,
-            onEventTap: widget.onEventTap,
+      child: Container(
+        // color: Colors.green,
+        child: RenderIdProvider(
+          id: dayFrom8,
+          child: Container(
+            /// TODO : Padding to fit events at time scale
+
+            padding: EdgeInsets.only(
+              top: widget.theme.padding.top,
+              bottom: widget.theme.padding.bottom,
+            ),
+            // color: Colors.green, // Needs for hitTesting
+            child: EventsLayout<T>(
+              // key: ValueKey(dayDate),
+              dayDate: dayFrom8,
+              eventBuilders: widget.eventBuilders,
+              viewType: CalendarView.week,
+              overlayKey: widget.overlayKey,
+              layoutsKeys: widget.layoutKeys,
+              eventsKeys: widget.eventKeys,
+              timelineTheme: widget.theme,
+              breaks: widget.breaks,
+              events: widget.events,
+              elevatedEvent: widget.elevatedEvent,
+              onEventTap: widget.onEventTap,
+            ),
           ),
         ),
       ),

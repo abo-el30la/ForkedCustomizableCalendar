@@ -12,6 +12,8 @@ import 'package:flutter_customizable_calendar/src/ui/custom_widgets/custom_widge
 import 'package:flutter_customizable_calendar/src/ui/themes/themes.dart';
 import 'package:flutter_customizable_calendar/src/utils/utils.dart';
 
+import '../../utils/lib_sizes.dart';
+
 /// A key holder of all DaysView keys
 @visibleForTesting
 abstract class DaysViewKeys {
@@ -173,7 +175,7 @@ class _DaysViewState<T extends FloatingCalendarEvent> extends State<DaysView<T>>
 
   double get _hourExtent => widget.timelineTheme.timeScaleTheme.hourExtent;
 
-  double get _dayExtent => _hourExtent * Duration.hoursPerDay;
+  double get _dayExtent => _hourExtent * LibSizes.hoursInDay;
 
   RenderBox? _getTimelineBox() => DaysViewKeys.timeline.currentContext?.findRenderObject() as RenderBox?;
 
