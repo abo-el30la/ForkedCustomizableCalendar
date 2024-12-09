@@ -32,7 +32,7 @@ extension WeekUtils on DateTime {
       start: DateUtils.addDaysToDate(this, 0),
       end: DateUtils.addDaysToDate(this, visibleDays),
     );
-    print('Week range: $range');
+    // print('Week range: $range');
     return range;
   }
 

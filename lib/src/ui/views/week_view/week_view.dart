@@ -279,9 +279,9 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
     final initialPage = _displayedWeek.start.difference(_initialWeek.start).inWeeks(
           widget.controller.visibleDays,
         );
-    print('initialPage : ${initialPage}');
-    print('initialPage : ${_displayedWeek.start}');
-    print('initialPage : ${_initialWeek.start}');
+    // print('initialPage : ${initialPage}');
+    // print('initialPage : ${_displayedWeek.start}');
+    // print('initialPage : ${_initialWeek.start}');
     _weekPickerController = PageController(
       initialPage: initialPage,
     );
@@ -486,7 +486,7 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
               getTimelineBox: () {
                 final pageIndex =
                     state.focusedDate.difference(widget.controller.initialDate).inDays ~/ widget.controller.visibleDays;
-
+                // print('getTimelineBox - pageIndex : ${pageIndex}');
                 return _getTimelineBox(
                   DateUtils.addDaysToDate(
                     widget.controller.initialDate,

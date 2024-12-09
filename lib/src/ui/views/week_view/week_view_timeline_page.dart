@@ -105,7 +105,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
 
   @override
   void initState() {
-    print('init state _focusedDate $_focusedDate');
+    // print('init state _focusedDate $_focusedDate');
     _daysRowController = PageController(
       initialPage: widget.weekPickerController.positions.isEmpty
           ? widget.weekPickerController.initialPage
@@ -169,7 +169,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
             controller: _daysRowController,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, pageIndex) {
-              print('pageIndex $pageIndex');
+              // print('pageIndex $pageIndex');
               final weekDays = _getWeekDays(pageIndex);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,7 +382,7 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
     List<DateTime> weekDays,
     double timeScaleWidth,
   ) {
-    print('_buildAllDayEventsList $weekDays');
+    // print('_buildAllDayEventsList $weekDays');
     return AllDaysEventsList(
       eventKeys: widget.eventKeys,
       eventBuilders: widget.eventBuilders,
@@ -417,13 +417,14 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
     //   weekStartsOnSunday: true,
     //   numberOfWeeks: 1,
     // );
+    final isSunday = _focusedDate.weekday == DateTime.sunday;
+    final index = pageIndex + (isSunday ? 1 : 0);
     final weekDays = DateUtils.addDaysToDate(
-      widget.controller.initialDate.add(
-        const Duration(hours: LibSizes.startHour),
-      ),
-      (pageIndex + 1) * widget.controller.visibleDays,
+      // if day is sunday then add 1 day
+      widget.controller.initialDate,
+      index * widget.controller.visibleDays,
     ).weekRange(widget.controller.visibleDays).days;
-
+    print('week days $weekDays');
     return weekDays;
   }
 
@@ -571,14 +572,14 @@ class _WeekViewTimelinePageState<T extends FloatingCalendarEvent> extends State<
       );
 
   Widget _singleDayView(DateTime dayDate) {
-    print('_singleDayView dayDate $dayDate');
+    // print('_singleDayView dayDate $dayDate');
     final dayFrom8 = dayDate.add(const Duration(hours: LibSizes.startHour, minutes: 0));
-    print('_singleDayView dayFrom8 $dayFrom8');
-    widget.events.forEach((element) {
-      print('_singleDayView start ${element.start}');
-      print('_singleDayView end ${element.end}');
-      print('_singleDayView duration ${element.duration}');
-    });
+    // print('_singleDayView dayFrom8 $dayFrom8');
+    // widget.events.forEach((element) {
+    //   print('_singleDayView start ${element.start}');
+    //   print('_singleDayView end ${element.end}');
+    //   print('_singleDayView duration ${element.duration}');
+    // });
     return Expanded(
       child: Container(
         // color: Colors.green,

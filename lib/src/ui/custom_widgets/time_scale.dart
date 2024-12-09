@@ -32,7 +32,7 @@ class _TimeScaleState extends State<TimeScale> {
 
   @override
   Widget build(BuildContext context) {
-    print('build - TimeScale ${widget.showCurrentTimeMark}');
+    // print('build - TimeScale ${widget.showCurrentTimeMark}');
     return CustomPaint(
       size: Size(
         widget.theme.width,
@@ -228,10 +228,13 @@ class _CurrentTimeMarkPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final secondExtent = size.height / (Duration.secondsPerDay + (LibSizes.startHour * Duration.secondsPerHour));
+    // final secondExtent = size.height / (Duration.secondsPerDay + (LibSizes.startHour * Duration.secondsPerHour));
+    final secondExtent = size.height / (Duration.secondsPerHour * LibSizes.hoursInDay);
+
     // print('paint - secondExtent: $secondExtent , ${Duration.secondsPerDay}');
     final dayDate = DateUtils.dateOnly(currentTime.value);
-    final timeDiff = currentTime.value.difference(dayDate);
+    // print('paint - dayDate: $dayDate');
+    final timeDiff = currentTime.value.difference(dayDate.add(const Duration(hours: LibSizes.startHour)));
     final currentTimeOffset = timeDiff.inSeconds * secondExtent;
     final dy = currentTimeOffset - theme.strokeWidth / 2;
 
