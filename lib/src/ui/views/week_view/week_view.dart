@@ -303,7 +303,7 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
             if (weeksOffset != _weekPickerController?.page?.round())
               _weekPickerController!.animateToPage(
                 weeksOffset,
-                duration: const Duration(milliseconds: 400),
+                duration: const Duration(milliseconds: 1),
                 curve: Curves.linearToEaseOut,
               ),
           ]).whenComplete(() {
@@ -329,7 +329,7 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
           Future.wait([
             _weekPickerController!.animateToPage(
               weeksOffset,
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 1),
               curve: Curves.linearToEaseOut,
             ),
           ]).whenComplete(() {
@@ -340,7 +340,7 @@ class _WeekViewState<T extends FloatingCalendarEvent> extends State<WeekView<T>>
           Future.wait([
             _weekPickerController!.animateToPage(
               weeksOffset,
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 1),
               curve: Curves.linearToEaseOut,
             ),
           ]).whenComplete(() {
